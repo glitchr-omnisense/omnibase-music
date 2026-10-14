@@ -76,7 +76,7 @@ class ReleaseCrudController extends AbstractCrudController
         yield ImageField::new('cover', '@music.admin.release.cover')->setColumns(4)->setRequired(false);
         yield TextField::new('title', '@music.admin.release.title')->setColumns(8);
         yield StateField::new('state')->setColumns(4);
-        yield SlugField::new('slug')->setColumns(4)->hideOnIndex();
+        yield SlugField::new('slug')->setTargetFieldName('title')->setColumns(4)->hideOnIndex();
         yield TextField::new('type', '@music.admin.release.type')->setColumns(4)->hideOnIndex()
             ->setFormType(EnumType::class)->setFormTypeOptions(['class' => ReleaseType::class, 'choice_label' => fn (ReleaseType $type) => '@music.release.type.'.$type->value])
             ->formatValue(fn ($value) => $value instanceof ReleaseType ? $value->value : $value);
@@ -84,21 +84,21 @@ class ReleaseCrudController extends AbstractCrudController
         yield TextField::new('catalogue', '@music.admin.release.catalogue')->setColumns(4)->setRequired(false);
         yield TextField::new('upc', '@music.admin.release.upc')->setColumns(4)->hideOnIndex()->setRequired(false);
         yield TextField::new('labelUrl', '@music.admin.release.label_url')->setColumns(8)->hideOnIndex()->setHelp('@music.admin.release.label_url_help')->setRequired(false);
-        yield DateField::new('releasedAt', '@music.admin.release.released_at')->setColumns(4);
+        yield DateField::new('releasedAt', '@music.admin.release.released_at')->setRequired(false)->setColumns(4);
         yield IntegerField::new('plays', '@music.admin.release.plays')->hideOnForm()->setHelp('@music.admin.release.plays_help');
         yield BooleanField::new('featured', '@music.admin.release.featured')->setColumns(2);
         yield BooleanField::new('upcoming', '@music.admin.release.upcoming')->setColumns(2)->hideOnIndex();
         yield TextField::new('presaveUrl', '@music.admin.release.presave_url')->setColumns(8)->hideOnIndex()->setRequired(false);
-        yield DateTimeField::new('publishedAt', '@music.admin.release.published_at')->setColumns(4)->hideOnIndex();
-        yield TextField::new('coverUrl', '@music.admin.release.cover_url')->setColumns(12)->hideOnIndex()->setHelp('@music.admin.release.cover_url_help');
+        yield DateTimeField::new('publishedAt', '@music.admin.release.published_at')->setRequired(false)->setColumns(4)->hideOnIndex();
+        yield TextField::new('coverUrl', '@music.admin.release.cover_url')->setRequired(false)->setColumns(12)->hideOnIndex()->setHelp('@music.admin.release.cover_url_help');
         yield AssociationField::new('performers', '@music.admin.release.performers')->allowMultipleChoices()->setRequired(false)->setColumns(12)->hideOnIndex();
-        yield TextField::new('headline', '@music.admin.release.headline')->setColumns(12)->hideOnIndex();
-        yield TextareaField::new('excerpt', '@music.admin.release.excerpt')->hideOnIndex()->setHelp('@music.admin.release.excerpt_help');
+        yield TextField::new('headline', '@music.admin.release.headline')->setRequired(false)->setColumns(12)->hideOnIndex();
+        yield TextareaField::new('excerpt', '@music.admin.release.excerpt')->setRequired(false)->hideOnIndex()->setHelp('@music.admin.release.excerpt_help');
         yield CollectionField::new('tracks', '@music.admin.release.tracks')->setEntryType(TrackType::class)->allowAdd()->allowDelete()->hideOnIndex()
             ->setFormTypeOptions(['by_reference' => false, 'allow_object' => true]);
-        yield TextField::new('links', '@music.admin.release.links')->onlyOnForms()
+        yield TextField::new('links', '@music.admin.release.links')->setRequired(false)->onlyOnForms()
             ->setFormType(LinksType::class)->setHelp('@music.admin.release.links_help');
-        yield TextareaField::new('awards', '@music.admin.release.awards')->hideOnIndex()->setHelp('@music.admin.release.awards_help');
+        yield TextareaField::new('awards', '@music.admin.release.awards')->setRequired(false)->hideOnIndex()->setHelp('@music.admin.release.awards_help');
         yield EditorField::new('content', '@music.admin.release.content')->hideOnIndex();
     }
 

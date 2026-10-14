@@ -40,7 +40,7 @@ class PlaylistCrudController extends AbstractCrudController
     {
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('title', '@music.admin.playlist.title')->setColumns(6);
-        yield SlugField::new('slug')->setColumns(3)->hideOnIndex();
+        yield SlugField::new('slug')->setTargetFieldName('title')->setColumns(3)->hideOnIndex();
         yield TextField::new('kind', '@music.admin.playlist.kind')->setColumns(3)
             ->setFormType(EnumType::class)->setFormTypeOptions(['class' => PlaylistKind::class, 'choice_label' => fn (PlaylistKind $k) => '@music.playlist.kind.'.$k->value])
             ->formatValue(fn ($value) => $value instanceof PlaylistKind ? $value->value : $value);
@@ -48,6 +48,6 @@ class PlaylistCrudController extends AbstractCrudController
         yield IntegerField::new('position', '@music.admin.playlist.position')->setColumns(2);
         yield BooleanField::new('visible', '@music.admin.playlist.visible')->setColumns(2);
         yield BooleanField::new('featured', '@music.admin.playlist.featured')->setColumns(2);
-        yield TextareaField::new('description', '@music.admin.playlist.description')->hideOnIndex();
+        yield TextareaField::new('description', '@music.admin.playlist.description')->setRequired(false)->hideOnIndex();
     }
 }

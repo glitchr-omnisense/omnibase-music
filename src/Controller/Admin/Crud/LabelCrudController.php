@@ -33,11 +33,11 @@ class LabelCrudController extends AbstractCrudController
         yield IdField::new('id')->onlyOnIndex();
         yield ImageField::new('logo', '@music.admin.label.logo')->setColumns(4)->setRequired(false);
         yield TextField::new('name', '@music.admin.label.name')->setColumns(5);
-        yield SlugField::new('slug')->setColumns(3)->hideOnIndex();
-        yield TextField::new('url', '@music.admin.label.url')->setColumns(6);
-        yield TextField::new('shopUrl', '@music.admin.label.shop_url')->setColumns(6)->hideOnIndex();
-        yield TextField::new('releaseUrlPattern', '@music.admin.label.release_url_pattern')->setColumns(9)->hideOnIndex()->setHelp('@music.admin.label.release_url_pattern_help');
-        yield CountryField::new('country', '@music.admin.label.country')->setColumns(3);
-        yield TextareaField::new('description', '@music.admin.label.description')->hideOnIndex();
+        yield SlugField::new('slug')->setTargetFieldName('name')->setColumns(3)->hideOnIndex();
+        yield TextField::new('url', '@music.admin.label.url')->setRequired(false)->setColumns(6);
+        yield TextField::new('shopUrl', '@music.admin.label.shop_url')->setRequired(false)->setColumns(6)->hideOnIndex();
+        yield TextField::new('releaseUrlPattern', '@music.admin.label.release_url_pattern')->setRequired(false)->setColumns(9)->hideOnIndex()->setHelp('@music.admin.label.release_url_pattern_help');
+        yield CountryField::new('country', '@music.admin.label.country')->setRequired(false)->setColumns(3);
+        yield TextareaField::new('description', '@music.admin.label.description')->setRequired(false)->hideOnIndex();
     }
 }

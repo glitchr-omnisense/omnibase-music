@@ -37,18 +37,18 @@ class WorkCrudController extends AbstractCrudController
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('composer', '@music.admin.work.composer')->setColumns(4);
         yield TextField::new('title', '@music.admin.work.title')->setColumns(5);
-        yield TextField::new('opus', '@music.admin.work.opus')->setColumns(3);
+        yield TextField::new('opus', '@music.admin.work.opus')->setRequired(false)->setColumns(3);
         yield TextField::new('formation', '@music.admin.work.formation')->setColumns(3)
             ->setFormType(EnumType::class)->setFormTypeOptions(['class' => Formation::class, 'choice_label' => fn (Formation $f) => '@music.formation.'.$f->value])
             ->formatValue(fn ($value) => $value instanceof Formation ? $value->value : $value);
-        yield TextField::new('instrumentation', '@music.admin.work.instrumentation')->setColumns(5)->hideOnIndex();
+        yield TextField::new('instrumentation', '@music.admin.work.instrumentation')->setRequired(false)->setColumns(5)->hideOnIndex();
         yield TextField::new('period', '@music.admin.work.period')->setColumns(4)->hideOnIndex()
             ->setFormType(EnumType::class)->setFormTypeOptions(['class' => Period::class, 'required' => false, 'placeholder' => '—', 'choice_label' => fn (Period $p) => '@music.period.'.$p->value])
             ->formatValue(fn ($value) => $value instanceof Period ? $value->value : $value);
-        yield IntegerField::new('year', '@music.admin.work.year')->setColumns(2);
-        yield IntegerField::new('duration', '@music.admin.work.duration')->setColumns(2)->hideOnIndex();
+        yield IntegerField::new('year', '@music.admin.work.year')->setRequired(false)->setColumns(2);
+        yield IntegerField::new('duration', '@music.admin.work.duration')->setRequired(false)->setColumns(2)->hideOnIndex();
         yield IntegerField::new('position', '@music.admin.work.position')->setColumns(2)->hideOnIndex();
         yield BooleanField::new('visible', '@music.admin.work.visible')->setColumns(2);
-        yield TextareaField::new('movements', '@music.admin.work.movements')->hideOnIndex()->setHelp('@music.admin.work.movements_help');
+        yield TextareaField::new('movements', '@music.admin.work.movements')->setRequired(false)->hideOnIndex()->setHelp('@music.admin.work.movements_help');
     }
 }

@@ -48,21 +48,21 @@ class VideoCrudController extends AbstractCrudController
         yield ImageField::new('poster', '@music.admin.video.poster')->setColumns(4)->setRequired(false);
         yield TextField::new('title', '@music.admin.video.title')->setColumns(8);
         yield StateField::new('state')->setColumns(4);
-        yield SlugField::new('slug')->setColumns(4)->hideOnIndex();
-        yield DateTimeField::new('publishedAt', '@music.admin.video.published_at')->setColumns(4)->hideOnIndex();
-        yield TextField::new('youtubeId', '@music.admin.video.youtube')->setColumns(4)->setHelp('@music.admin.video.youtube_help');
-        yield TextField::new('vimeoId', '@music.admin.video.vimeo')->setColumns(4)->hideOnIndex();
+        yield SlugField::new('slug')->setTargetFieldName('title')->setColumns(4)->hideOnIndex();
+        yield DateTimeField::new('publishedAt', '@music.admin.video.published_at')->setRequired(false)->setColumns(4)->hideOnIndex();
+        yield TextField::new('youtubeId', '@music.admin.video.youtube')->setRequired(false)->setColumns(4)->setHelp('@music.admin.video.youtube_help');
+        yield TextField::new('vimeoId', '@music.admin.video.vimeo')->setRequired(false)->setColumns(4)->hideOnIndex();
         yield VideoField::new('file', '@music.admin.video.file')->setColumns(4)->setRequired(false)->hideOnIndex()->setFormTypeOption('multiple', false);
-        yield IntegerField::new('duration', '@music.admin.video.duration')->setColumns(3)->hideOnIndex()->setHelp('@music.admin.video.duration_help');
-        yield DateField::new('recordedAt', '@music.admin.video.recorded_at')->setColumns(3);
-        yield TextField::new('venue', '@music.admin.video.venue')->setColumns(4)->hideOnIndex();
+        yield IntegerField::new('duration', '@music.admin.video.duration')->setRequired(false)->setColumns(3)->hideOnIndex()->setHelp('@music.admin.video.duration_help');
+        yield DateField::new('recordedAt', '@music.admin.video.recorded_at')->setRequired(false)->setColumns(3);
+        yield TextField::new('venue', '@music.admin.video.venue')->setRequired(false)->setColumns(4)->hideOnIndex();
         yield BooleanField::new('featured', '@music.admin.video.featured')->setColumns(2);
         yield AssociationField::new('work', '@music.admin.video.work')->setColumns(6)->setRequired(false)->hideOnIndex();
         // A release is a thread: picked from the list, as marketplace picks a product's store.
         yield SelectField::new('release', '@music.admin.video.release')->setClass(Release::class)->setRequired(false)->setColumns(6)->hideOnIndex();
         yield AssociationField::new('performers', '@music.admin.video.performers')->allowMultipleChoices()->setRequired(false)->setColumns(12)->hideOnIndex();
-        yield TextField::new('headline', '@music.admin.video.headline')->setColumns(12)->hideOnIndex();
-        yield TextareaField::new('excerpt', '@music.admin.video.excerpt')->hideOnIndex();
+        yield TextField::new('headline', '@music.admin.video.headline')->setRequired(false)->setColumns(12)->hideOnIndex();
+        yield TextareaField::new('excerpt', '@music.admin.video.excerpt')->setRequired(false)->hideOnIndex();
     }
 
     public function createEntity(string $entityFqcn): object
