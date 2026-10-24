@@ -10,13 +10,13 @@
 <article class="music-video-card">
     {% if src %}
     <div class="music-poster" data-music-film data-kind="{{ video.local ? 'file' : (video.youtubeId ? 'youtube' : 'vimeo') }}" data-src="{{ src }}" data-title="{{ video.title }}">
-        {% if video.poster %}<img src="{{ video.poster }}" alt="" loading="lazy">{% endif %}
+        {% if video.posterUrl %}<img src="{{ video.posterUrl }}" alt="" loading="lazy">{% endif %}
         <button type="button" class="music-poster-play" data-music-film-play aria-label="{{ '@music.video.play'|trans({title: video.title}) }}"{% if not video.local %} title="{{ (video.youtubeId ? '@music.video.consent_youtube' : '@music.video.consent_vimeo')|trans }}"{% endif %}><i class="fa-solid fa-play" aria-hidden="true"></i></button>
         {% if video.duration %}<span class="music-poster-duration">{{ video.duration|music_duration }}</span>{% endif %}
         <button type="button" class="music-poster-close" data-music-film-close aria-label="{{ '@music.video.close'|trans }}" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
     {% else %}
-    <a class="music-poster" href="{{ path('music_video', {slug: video.slug}) }}" tabindex="-1" aria-hidden="true">{% if video.poster %}<img src="{{ video.poster }}" alt="" loading="lazy">{% endif %}</a>
+    <a class="music-poster" href="{{ path('music_video', {slug: video.slug}) }}" tabindex="-1" aria-hidden="true">{% if video.posterUrl %}<img src="{{ video.posterUrl }}" alt="" loading="lazy">{% endif %}</a>
     {% endif %}
     <h3><a href="{{ path('music_video', {slug: video.slug}) }}">{{ video.title }}</a></h3>
     {% if video.venue or video.recordedAt %}<span class="music-card-meta">{{ video.venue }}{{ video.venue and video.recordedAt ? ' · ' }}{{ video.recordedAt ? video.recordedAt|format_date('medium') }}</span>{% endif %}

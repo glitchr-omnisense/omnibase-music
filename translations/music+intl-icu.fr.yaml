@@ -273,6 +273,11 @@ admin:
     performers: "Avec"
     headline: "Sous-titre"
     excerpt: "Texte"
+    action:
+      poster: "Choisir dans le film"
+    flash:
+      poster: "Une affiche a été choisie parmi les images du film : la plus nette, la mieux éclairée, avec la musicienne ou l’instrument."
+      no_poster: "Aucune image du film n’a pu être obtenue (pas de réponse de la plateforme, ou pas de ffmpeg pour un fichier du site)."
   instrument:
     name: "Nom"
     image: "Photo"

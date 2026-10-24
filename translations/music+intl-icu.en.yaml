@@ -273,6 +273,11 @@ admin:
     performers: "With"
     headline: "Subtitle"
     excerpt: "Text"
+    action:
+      poster: "Pick from the film"
+    flash:
+      poster: "A poster was chosen among the film's frames: the clearest, best lit, with the musician or the instrument."
+      no_poster: "No frame of the film could be had (no answer from the platform, or no ffmpeg for a file of the site)."
   instrument:
     name: "Name"
     image: "Picture"

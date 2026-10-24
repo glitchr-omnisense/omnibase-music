@@ -273,6 +273,11 @@ admin:
     performers: "Mit"
     headline: "Untertitel"
     excerpt: "Text"
+    action:
+      poster: "Aus dem Film wählen"
+    flash:
+      poster: "Ein Vorschaubild wurde aus den Bildern des Films gewählt: das schärfste, am besten belichtete, mit dem Musiker oder dem Instrument."
+      no_poster: "Kein Bild des Films war zu bekommen (keine Antwort der Plattform, oder kein ffmpeg für eine Datei der Website)."
   instrument:
     name: "Name"
     image: "Foto"

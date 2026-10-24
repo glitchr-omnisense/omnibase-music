@@ -164,6 +164,21 @@ class Video extends Thread implements LinkableInterface
     }
 
     public function getPoster(): ?string { return Uploader::getPublic($this, 'poster'); }
+
+    /**
+     * The poster's address on the site ("/uploads/..."), what a page shows: the upload's own path can be the
+     * file's on disk (/srv/app/public/uploads/...), which no browser can load - as Track::getSampleUrl().
+     */
+    public function getPosterUrl(): ?string
+    {
+        $path = $this->getPoster();
+        if (null === $path || '' === $path) {
+            return null;
+        }
+        $public = strpos($path, '/public/');
+
+        return false !== $public ? substr($path, $public + \strlen('/public')) : (str_starts_with($path, '/') || str_contains($path, '://') ? $path : null);
+    }
     public function getPosterFile(): ?File { return Uploader::get($this, 'poster'); }
     public function setPoster($poster): self { $this->poster = $poster; return $this; }
 

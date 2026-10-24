@@ -22,11 +22,11 @@
     </header>
 
     {% if video.local %}
-    <div class="music-poster"><video controls playsinline preload="none"{% if video.poster %} poster="{{ video.poster }}"{% endif %}><source src="{{ video.file }}"></video></div>
+    <div class="music-poster"><video controls playsinline preload="none"{% if video.posterUrl %} poster="{{ video.posterUrl }}"{% endif %}><source src="{{ video.file }}"></video></div>
     {% elseif video.embedUrl %}
     <div class="music-poster" data-music-embed>
         <template><iframe src="{{ video.embedUrl }}" title="{{ video.title }}" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen loading="lazy"></iframe></template>
-        {% if video.poster %}<img src="{{ video.poster }}" alt="">{% endif %}
+        {% if video.posterUrl %}<img src="{{ video.posterUrl }}" alt="">{% endif %}
         <button type="button" class="music-poster-play" data-music-embed-play aria-label="{{ '@music.video.play'|trans({title: video.title}) }}"><i class="fa-solid fa-play" aria-hidden="true"></i></button>
         {% if video.duration %}<span class="music-poster-duration">{{ video.duration|music_duration }}</span>{% endif %}
     </div>
