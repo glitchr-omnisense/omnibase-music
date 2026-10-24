@@ -9,13 +9,17 @@
     {% if full %}{% include '@Music/client/_full.html.twig' with {release: release, embeds: full} only %}{% endif %}
     {% if embed and not full %}{% include '@Music/client/_embed.html.twig' with {embed: embed, release: release} only %}{% endif %}
     {% if release.tracks|length and fold|default(false) %}
-    {# Several records on a page: one button plays the record from its first track, the tracks wait behind a disclosure. #}
+    {# Several records on a page: one button plays the record from its first track, the tracks wait behind a
+     # second button beside it, which opens their list under both (player.js, [data-music-fold]). #}
+    {% set list_id = 'music-fold-' ~ release.slug %}
     <div class="music-fold">
-        {% if playable|default(false) %}<button type="button" class="music-button music-release-play" data-music-release-play="{{ release.slug }}" aria-pressed="false"><i class="fa-solid fa-play music-icon-play" aria-hidden="true"></i><i class="fa-solid fa-pause music-icon-pause" aria-hidden="true"></i><span>{{ '@music.index.listen'|trans }}</span></button>{% endif %}
-        <details class="music-fold-tracks">
-            <summary><span>{{ '@music.release.tracks'|trans({count: release.tracks|length}) }}</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary>
+        <div class="music-fold-actions">
+            {% if playable|default(false) %}<button type="button" class="music-button music-release-play" data-music-release-play="{{ release.slug }}" aria-pressed="false"><i class="fa-solid fa-play music-icon-play" aria-hidden="true"></i><i class="fa-solid fa-pause music-icon-pause" aria-hidden="true"></i><span>{{ '@music.index.listen'|trans }}</span></button>{% endif %}
+            <button type="button" class="music-button is-ghost music-fold-toggle" data-music-fold aria-expanded="false" aria-controls="{{ list_id }}"><span>{{ '@music.release.tracks'|trans({count: release.tracks|length}) }}</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+        </div>
+        <div class="music-fold-tracks" id="{{ list_id }}" hidden>
             {% include '@Music/client/_tracks.html.twig' with {release: release, waves: waves} only %}
-        </details>
+        </div>
     </div>
     {% elseif release.tracks|length %}{% include '@Music/client/_tracks.html.twig' with {release: release, waves: waves} only %}{% endif %}
 </div>

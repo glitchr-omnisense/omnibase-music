@@ -32,7 +32,8 @@
             {% set performers_line = music_performers(featured) %}
             {% if performers_line %}<p class="music-performers">{{ '@music.release.with'|trans({performers: performers_line}) }}</p>{% endif %}
             {% include '@Music/client/_label.html.twig' with {release: featured} only %}
-            <p><a class="music-button is-ghost" href="{{ path('music_release', {slug: featured.slug}) }}"><i class="fa-solid fa-headphones" aria-hidden="true"></i> {{ '@music.index.listen'|trans }}</a></p>
+            {# Played here as on the home page: "listen" from its first track, its tracks behind the button beside it. #}
+            {{ music_player(featured, {fold: true}) }}
         </div>
     </article>
     {% endif %}

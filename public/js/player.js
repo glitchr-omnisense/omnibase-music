@@ -253,6 +253,17 @@
         if (film && film.preview && film.box === box) filmClose();
     });
     // Any film of the page that sounds (a <video> with its controls, the hero's once its sound is on): the music pauses.
+    // A record's tracks behind their button (music_player(release, {fold: true})): open, closed.
+    document.addEventListener('click', (event) => {
+        const toggle = event.target instanceof Element ? event.target.closest('[data-music-fold]') : null;
+        if (!toggle) return;
+        const list = document.getElementById(toggle.getAttribute('aria-controls'));
+        if (!list) return;
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(open));
+        list.hidden = !open;
+        if (open) drawAll();
+    });
     document.addEventListener('play', (event) => { if (event.target instanceof HTMLVideoElement && !event.target.muted) audio.pause(); }, true);
     document.addEventListener('volumechange', (event) => { if (event.target instanceof HTMLVideoElement && !event.target.muted && !event.target.paused) audio.pause(); }, true);
 
