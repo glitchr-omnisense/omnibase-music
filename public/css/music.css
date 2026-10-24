@@ -316,6 +316,16 @@ html.music-playing-bar body { padding-bottom: 4.5rem; }
 .music-mini::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--music-accent, #8a5a2b); opacity: 0; pointer-events: none; }
 @media (prefers-reduced-motion: no-preference) { .music-mini.is-playing:not(.is-carried)::before { animation: music-ring 2.2s ease-out infinite; } }
 @keyframes music-ring { from { opacity: .7; scale: 1; } to { opacity: 0; scale: 1.45; } }
+/* Heard (the analyser reads the sound): no steady pulse, a ring per onset instead, as wide and bright as
+   the onset is strong, and a halo on the edge with the level. */
+.music-mini.is-playing.is-listening::before { animation: none; opacity: calc(var(--music-level, 0) * .55); scale: calc(1 + var(--music-level, 0) * .08); }
+.music-mini-ping { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--music-accent, #8a5a2b); opacity: 0; pointer-events: none;
+    animation: music-ping calc(1.1s + var(--music-strength, .5) * .9s) cubic-bezier(.15, .6, .35, 1) forwards; }
+.music-mini.is-carried .music-mini-ping { display: none; }
+@keyframes music-ping {
+    from { opacity: calc(.35 + var(--music-strength, .5) * .55); scale: 1; border-width: calc(1px + var(--music-strength, .5) * 2px); }
+    to { opacity: 0; scale: calc(1.2 + var(--music-strength, .5) * .55); border-width: 1px; }
+}
 /* No pointer to come near with (a phone): the line is there, faint, so the ring can be found. */
 @media (hover: none) { .music-mini-rim::before { opacity: .4; } }
 

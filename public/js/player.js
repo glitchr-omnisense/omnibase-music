@@ -40,7 +40,8 @@
  * Waves: a canvas.music-wave with data-peaks is drawn as bars, the played
  * part in --music-wave-played, the rest in --music-wave. With
  * data-music-waves="live" on the bar, its canvas follows the sound
- * (an AnalyserNode) - unless the visitor asks for less motion.
+ * (an AnalyserNode) - unless the visitor asks for less motion. The bubble's
+ * rings follow it too: one on each onset, its width the onset's strength.
  *
  * window.MusicPlayer: { audio, analyser, current, play(el|data), pause(),
  * toggle(), next(), prev(), seek(seconds), close(), tuck(), untuck(), expand(open?) }; on document the events
@@ -667,7 +668,47 @@
         paint(rest);
         ctx.save(); ctx.beginPath(); ctx.rect(0, 0, Math.max(0, Math.min(1, progress)) * w, h); ctx.clip(); paint(played); ctx.restore();
     }
-    function kick() { if (!frame) frame = requestAnimationFrame(loop); }
+    function kick() { if (!frame) frame = requestAnimationFrame(loop); sonar(); }
+    /*
+     * The bubble's sonar, by the sound: a ring goes out on each onset (a plucked string, a beat) -
+     * the louder against what came just before, the wider and the brighter -, and a halo on its
+     * edge follows the level (--music-level, 0..1). Read from the analyser's waveform, which its
+     * smoothing does not slow. Without it (a preview CORS refuses, less motion asked), the CSS
+     * pulse at a steady pace stays.
+     */
+    const ping = { frame: 0, buffer: null, mean: 0, level: 0, last: 0 };
+    function sonar() {
+        if (!ping.frame) ping.frame = requestAnimationFrame(listen);
+    }
+    function listen(now) {
+        ping.frame = 0;
+        const m = mini();
+        const hearing = !!(m && analyser && audio === main && !audio.paused && !reduced.matches);
+        if (m) m.classList.toggle('is-listening', hearing);
+        if (!hearing) { ping.mean = 0; ping.level = 0; if (m) m.style.removeProperty('--music-level'); return; }
+        if (!m.hidden) {
+            if (!ping.buffer || ping.buffer.length !== analyser.fftSize) ping.buffer = new Uint8Array(analyser.fftSize);
+            analyser.getByteTimeDomainData(ping.buffer);
+            let sum = 0;
+            for (let i = 0; i < ping.buffer.length; i++) { const v = (ping.buffer[i] - 128) / 128; sum += v * v; }
+            const rms = Math.sqrt(sum / ping.buffer.length);
+            // The level eases down, rises at once; the mean is the last second or so.
+            ping.level = Math.max(rms, ping.level * 0.9);
+            m.style.setProperty('--music-level', Math.min(1, ping.level * 5).toFixed(3));
+            const rise = ping.mean ? rms / ping.mean : 0;
+            if (rms > 0.02 && rise > 1.35 && now - ping.last > 180 && m.querySelectorAll('.music-mini-ping').length < 6) {
+                ping.last = now;
+                const ring = document.createElement('span');
+                ring.className = 'music-mini-ping';
+                ring.setAttribute('aria-hidden', 'true');
+                ring.style.setProperty('--music-strength', Math.min(1, (rise - 1.35) / 1.6 + rms * 2).toFixed(3));
+                ring.addEventListener('animationend', () => ring.remove(), { once: true });
+                m.prepend(ring);
+            }
+            ping.mean = ping.mean ? ping.mean * 0.96 + rms * 0.04 : rms;
+        }
+        ping.frame = requestAnimationFrame(listen);
+    }
     function progress() {
         const p = isFinite(audio.duration) && audio.duration ? audio.currentTime / audio.duration : 0, b = bar();
         if (b) {
