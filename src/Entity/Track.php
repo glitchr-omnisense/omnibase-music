@@ -81,6 +81,18 @@ class Track
     #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $performers = null;
 
+    /**
+     * The day it can be heard: a single out before its album (that day or
+     * earlier), or a track kept for the album's day (later). Empty: when its
+     * release is out.
+     */
+    #[ORM\Column(type: 'date_immutable', nullable: true)]
+    protected ?\DateTimeImmutable $availableFrom = null;
+
+    /** @var list<string>|null ISO 3166 countries ("DE", "JP") where it is not played: the rights stop there. */
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected ?array $blockedIn = null;
+
     public function __toString(): string
     {
         return $this->getDisplayTitle();
@@ -207,4 +219,55 @@ class Track
 
     public function getPerformers(): ?string { return $this->performers; }
     public function setPerformers(?string $performers): self { $this->performers = $performers ?: null; return $this; }
+
+    public function getAvailableFrom(): ?\DateTimeImmutable { return $this->availableFrom; }
+    public function setAvailableFrom(?\DateTimeInterface $availableFrom): self
+    {
+        $this->availableFrom = null !== $availableFrom ? \DateTimeImmutable::createFromInterface($availableFrom)->setTime(0, 0) : null;
+
+        return $this;
+    }
+
+    /**
+     * Whether it can be heard on $day: from its own date when it has one (a
+     * single before its album), else once its release is out.
+     */
+    public function isOutOn(\DateTimeInterface $day): bool
+    {
+        if (null !== $this->availableFrom) {
+            return $this->availableFrom <= $day;
+        }
+
+        return null === $this->release || $this->release->isOut();
+    }
+
+    /** The day it will be heard, when that is not yet: its own, else its release's. */
+    public function getOutDate(): ?\DateTimeInterface
+    {
+        return $this->availableFrom ?? $this->release?->getReleasedAt();
+    }
+
+    /** @return list<string> */
+    public function getBlockedIn(): array { return $this->blockedIn ?? []; }
+
+    /** @param iterable<string>|null $countries */
+    public function setBlockedIn(?iterable $countries): self
+    {
+        $codes = [];
+        foreach ($countries ?? [] as $country) {
+            $code = strtoupper(trim((string) $country));
+            if (preg_match('/^[A-Z]{2}$/', $code)) {
+                $codes[$code] = $code;
+            }
+        }
+        sort($codes);
+        $this->blockedIn = $codes ? array_values($codes) : null;
+
+        return $this;
+    }
+
+    public function isBlockedIn(?string $country): bool
+    {
+        return null !== $country && \in_array(strtoupper($country), $this->getBlockedIn(), true);
+    }
 }

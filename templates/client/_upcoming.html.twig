@@ -1,0 +1,19 @@
+{#
+ # A record announced, as the platforms show one before its day: its sleeve,
+ # "coming soon" and its date, the pre-save link, and its whole track list -
+ # the singles already out play, the other tracks are greyed with their day
+ # (Track::$availableFrom, Service\Availability).
+ #}
+<article class="music-featured music-upcoming-release">
+    <a class="music-card-cover" href="{{ path('music_release', {slug: release.slug}) }}">
+        {% if release.artwork %}<img src="{{ release.artwork }}" alt="{{ '@music.release.cover_of'|trans({title: release.title}) }}" loading="lazy">{% endif %}
+    </a>
+    <div>
+        <p class="music-eyebrow">{{ ('@music.release.type.' ~ release.type.value)|trans }} · {{ '@music.release.upcoming'|trans }}</p>
+        <h2><a href="{{ path('music_release', {slug: release.slug}) }}">{{ release.title }}</a></h2>
+        {% if release.releasedAt %}<p class="music-upcoming">{{ '@music.release.out_on'|trans({date: release.releasedAt|format_date('long')}) }}</p>{% endif %}
+        {% if release.headline %}<p class="music-lead">{{ release.headline }}</p>{% endif %}
+        {% if release.presaveUrl %}<p><a class="music-button is-ghost" href="{{ release.presaveUrl }}" target="_blank" rel="noopener"><i class="fa-solid fa-bookmark" aria-hidden="true"></i> {{ '@music.release.presave'|trans }}</a></p>{% endif %}
+        {{ music_player(release) }}
+    </div>
+</article>

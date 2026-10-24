@@ -14,6 +14,7 @@ use Base\Music\Repository\InstrumentRepository;
 use Base\Music\Repository\PlaylistRepository;
 use Base\Music\Repository\ReleaseRepository;
 use Base\Music\Repository\VideoRepository;
+use Base\Music\Service\Availability;
 use Base\Music\Service\Player;
 use Base\Service\SettingBagInterface;
 use Omnisong\Platform;
@@ -38,6 +39,7 @@ final class MusicExtension extends AbstractExtension
         private readonly PlaylistRepository $playlists,
         private readonly Player $player,
         private readonly ?SettingBagInterface $settingBag = null,
+        private readonly ?Availability $availability = null,
         #[Autowire('%music.player.waves%')] private readonly bool $waves = true,
         #[Autowire('%music.player.live_waves%')] private readonly bool $liveWaves = true,
         #[Autowire('%music.label_first%')] private readonly bool $labelFirst = true,
@@ -66,7 +68,9 @@ final class MusicExtension extends AbstractExtension
             new TwigFunction('music_instrument', fn (): ?Instrument => $this->instruments->findFeatured()),
             new TwigFunction('music_performers', self::performers(...)),
             new TwigFunction('music_platform_icon', self::platformIcon(...)),
-            new TwigFunction('music_source', $this->player->source(...)),
+            // Nothing to play for a track not out yet, or withheld in the visitor's country: music_unavailable says why.
+            new TwigFunction('music_source', fn (Track $track): ?array => $this->availability?->allows($track) === false ? null : $this->player->source($track)),
+            new TwigFunction('music_unavailable', fn (Track $track): ?array => $this->availability?->why($track)),
             new TwigFunction('music_has_full', $this->hasFull(...)),
         ];
     }
@@ -212,7 +216,7 @@ final class MusicExtension extends AbstractExtension
     private function hasAudio(Release $release): bool
     {
         foreach ($release->getTracks() as $track) {
-            if ($track->hasAudio()) {
+            if ($track->hasAudio() && false !== $this->availability?->allows($track)) {
                 return true;
             }
         }

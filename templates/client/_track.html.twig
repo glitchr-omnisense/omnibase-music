@@ -2,9 +2,15 @@
  # One track: its play button (what it plays from: music_source() - the
  # site's excerpt, a catalogue's preview, or the release's embed), its
  # place, its title, its waveform, its length. `single` renders the button
- # and the title alone (music_player(track)).
+ # and the title alone (music_player(track)). A track not out yet, or withheld
+ # in the visitor's country, is greyed with the reason (Service\Availability).
  #}
 {% set source = music_source(track) %}
+{% set unavailable = music_unavailable(track) %}
+{# Why it does not play, when it does not: its day to come (a track kept for its album), or the visitor's country. #}
+{% set why = not unavailable ? null : (unavailable.reason == 'region'
+    ? '@music.track.blocked'|trans
+    : (unavailable.date ? '@music.release.out_on'|trans({date: unavailable.date|format_date('long')}) : '@music.release.upcoming'|trans)) %}
 {% set label = track.displayTitle %}
 {% set button %}
 <button type="button" class="music-track-play"
@@ -23,15 +29,16 @@
 </button>
 {% endset %}
 {% if single|default(false) %}
-<span class="music-track is-single" data-music-row>{{ button }}<span class="music-track-title">{{ label }}</span></span>
+<span class="music-track is-single{{ why ? ' is-unavailable' }}" data-music-row{% if why %} title="{{ why }}"{% endif %}>{{ button }}<span class="music-track-title">{{ label }}</span></span>
 {% else %}
-<li class="music-track{{ waves ? ' has-wave' }}" data-music-row>
+<li class="music-track{{ waves ? ' has-wave' }}{{ why ? ' is-unavailable' }}" data-music-row>
     {{ button }}
     <span class="music-track-no">{{ track.position }}</span>
     <span class="music-track-title">{{ label }}
         {%- if track.title and track.work %}<small>{{ track.work.composer }}{{ track.movement ? ' · ' ~ track.movement }}</small>{% endif %}
         {%- if track.performers %}<small>{{ track.performers }}</small>{% endif %}
         {%- if source and source.kind == 'preview' %}<small>{{ '@music.player.preview'|trans }}</small>{% endif %}
+        {%- if why %}<small class="music-track-why">{{ why }}</small>{% endif %}
     </span>
     {% if waves %}<canvas{% if track.id %} id="music-wave-{{ track.id }}"{% endif %} class="music-wave" data-peaks="{{ (track.peaks ?? [])|json_encode }}" aria-hidden="true"></canvas>{% endif %}
     <span class="music-track-time">{{ track.duration|music_duration }}</span>

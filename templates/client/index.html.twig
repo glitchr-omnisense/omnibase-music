@@ -40,7 +40,8 @@
 
     {% if upcoming|length %}
     <h2>{{ '@music.index.upcoming'|trans }}</h2>
-    <div class="music-grid">{% for release in upcoming %}{% include '@Music/client/_release_card.html.twig' %}{% endfor %}</div>
+    {# Each announced record whole: its singles out play, its other tracks wait for its day. #}
+    {% for release in upcoming %}{% include '@Music/client/_upcoming.html.twig' %}{% endfor %}
     {% endif %}
 
     {% if others|length %}

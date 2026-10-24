@@ -219,6 +219,10 @@ admin:
     plays_help: "Counted by the site's player once 30 seconds were heard (or most of a shorter excerpt). The back office's own listening is not counted."
     preview_url: "Catalogue preview"
     preview_url_help: "30 seconds from a catalogue (iTunes), filled by “Complete”."
+    available_from: "Out on"
+    available_from_help: "A single out before its album: the day it can be heard, while the album's other tracks wait for its release. Empty: the release's day."
+    blocked_in: "Not played in"
+    blocked_in_help: "The countries its rights do not cover: there it shows, greyed, and does not play."
     performers: "Performers on this track"
   lookup:
     title: "Look up a record"
@@ -312,3 +316,6 @@ sheet:
 consent:
   label: "Platforms' players"
   description: "Spotify, Apple Music, Deezer, YouTube, Vimeo: their player, loaded when you ask for it, sets its own cookies."
+
+track:
+  blocked: "Not available in your country"

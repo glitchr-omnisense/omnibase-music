@@ -8,6 +8,8 @@ use Base\Music\Entity\Work;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -17,8 +19,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * One track of a release in the back office: its place, its title - or
  * the work and the movement - its length, its ISRC, the site's file (an
- * upload: an excerpt, or the whole track) and a catalogue's preview, and
- * how many times it was played. The waveform is not typed: it is
+ * upload: an excerpt, or the whole track) and a catalogue's preview, the
+ * day it can be heard (a single before its album) and the countries it is
+ * not played in, and how many times it was played. The waveform is not typed: it is
  * computed (the "Waveforms" action, or `music:peaks`).
  *
  * The texts name their domain (@music.…): base-bundle gives every field
@@ -40,6 +43,9 @@ class TrackType extends AbstractType
             ->add('whole', CheckboxType::class, ['label' => '@music.admin.track.whole', 'required' => false, 'help' => '@music.admin.track.whole_help'])
             ->add('previewUrl', UrlType::class, ['label' => '@music.admin.track.preview_url', 'required' => false, 'default_protocol' => 'https', 'help' => '@music.admin.track.preview_url_help'])
             ->add('performers', TextType::class, ['label' => '@music.admin.track.performers', 'required' => false])
+            // A single out before its album, and the countries its rights stop at (Service\Availability).
+            ->add('availableFrom', DateType::class, ['label' => '@music.admin.track.available_from', 'required' => false, 'widget' => 'single_text', 'input' => 'datetime_immutable', 'help' => '@music.admin.track.available_from_help'])
+            ->add('blockedIn', CountryType::class, ['label' => '@music.admin.track.blocked_in', 'required' => false, 'multiple' => true, 'help' => '@music.admin.track.blocked_in_help'])
             // Read, never typed: the player counts them (music_track_play).
             ->add('plays', IntegerType::class, ['label' => '@music.admin.track.plays', 'disabled' => true, 'required' => false, 'help' => '@music.admin.track.plays_help']);
     }

@@ -219,6 +219,10 @@ admin:
     plays_help: "Vom Player der Website gezählt, sobald 30 Sekunden gehört wurden (oder der größte Teil eines kürzeren Ausschnitts). Das Hören aus dem Backoffice zählt nicht."
     preview_url: "Hörprobe eines Katalogs"
     preview_url_help: "30 Sekunden aus einem Katalog (iTunes), von „Vervollständigen“ gefüllt."
+    available_from: "Verfügbar ab"
+    available_from_help: "Eine Single vor ihrem Album: der Tag, ab dem sie zu hören ist, während die anderen Titel des Albums auf sein Erscheinen warten. Leer: der Erscheinungstag."
+    blocked_in: "Nicht abgespielt in"
+    blocked_in_help: "Die Länder, die seine Rechte nicht abdecken: dort wird er ausgegraut angezeigt und nicht abgespielt."
     performers: "Mitwirkende dieses Titels"
   lookup:
     title: "Album suchen"
@@ -312,3 +316,6 @@ sheet:
 consent:
   label: "Player der Plattformen"
   description: "Spotify, Apple Music, Deezer, YouTube, Vimeo: ihr Player, geladen, wenn Sie ihn anfordern, setzt eigene Cookies."
+
+track:
+  blocked: "In Ihrem Land nicht verfügbar"

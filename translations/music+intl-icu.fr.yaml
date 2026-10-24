@@ -219,6 +219,10 @@ admin:
     plays_help: "Comptées par le lecteur du site une fois 30 secondes entendues (ou l’essentiel d’un extrait plus court). Les écoutes faites depuis le back-office ne comptent pas."
     preview_url: "Extrait d’un catalogue"
     preview_url_help: "30 secondes d’un catalogue (iTunes), rempli par « Compléter »."
+    available_from: "Disponible le"
+    available_from_help: "Un single paru avant son album : le jour où il s’écoute, tandis que les autres titres de l’album attendent sa sortie. Vide : le jour de la parution."
+    blocked_in: "Non diffusé en"
+    blocked_in_help: "Les pays que ses droits ne couvrent pas : il s’y affiche, grisé, sans être joué."
     performers: "Interprètes de cette plage"
   lookup:
     title: "Chercher un disque"
@@ -312,3 +316,6 @@ sheet:
 consent:
   label: "Lecteurs des plateformes"
   description: "Spotify, Apple Music, Deezer, YouTube, Vimeo : leur lecteur, chargé quand vous le demandez, dépose ses propres cookies."
+
+track:
+  blocked: "Non disponible dans votre pays"
