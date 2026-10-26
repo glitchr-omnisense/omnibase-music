@@ -1,6 +1,6 @@
 # Music
 
-A musician's site on [omnibase](https://github.com/glitchr-studio/omnibase):
+A musician's site on [omnibase](https://github.com/glitchr-omnisense/omnibase):
 the records and the label that released them, the repertoire, the films,
 the instrument, the people who play along - and one player for the whole
 page, with no dependency. Written first for two classical musicians: a
@@ -141,7 +141,7 @@ player has nothing to play for.
 ## Omnisong: the catalogues
 
 The links, the previews and the embeds come from
-[glitchr/omnisong](https://github.com/glitchr-studio/omnisong): one
+[glitchr/omnisong](https://github.com/glitchr-omnisense/omnisong): one
 contract over song.link (Odesli) for the links to every platform, the
 iTunes Search API for the tracks and their 30 s previews, and the
 iframes of Spotify, Apple Music, Deezer, YouTube and SoundCloud. Its

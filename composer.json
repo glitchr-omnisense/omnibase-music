@@ -1,6 +1,6 @@
 {
     "name": "omnibase/music",
-    "description": "A musician's site on omnibase: discography with the label in front, repertoire, videos, instrument, performers, and a dependency-free player - the listening links through omniscient/omnisong.",
+    "description": "A musician's site on omnibase: discography with the label in front, repertoire, videos, instrument, performers, and a dependency-free player - the listening links through omnisense/omnisong.",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -13,14 +13,14 @@
         "php": "^8.2",
         "doctrine/orm": "^2.15|^3.0",
         "omnibridge/symfony": "1.x-dev",
-        "omniscient/omnibase": "3.0.*-dev || 4.0.*-dev",
+        "omnisense/omnibase": "3.0.*-dev || 4.0.*-dev",
         "omnibase/admin": "dev-main",
         "symfony/config": "^6.0|^7.0|^8.0",
         "symfony/dependency-injection": "^6.0|^7.0|^8.0",
         "symfony/form": "^6.0|^7.0|^8.0",
         "symfony/http-kernel": "^6.0|^7.0|^8.0",
         "symfony/security-bundle": "^6.0|^7.0|^8.0",
-        "omniscient/omnisong": "1.x-dev",
+        "omnisense/omnisong": "1.x-dev",
         "symfony/process": "^6.0|^7.0|^8.0",
         "symfony/twig-bundle": "^6.0|^7.0|^8.0"
     },
