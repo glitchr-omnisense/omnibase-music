@@ -108,9 +108,10 @@ sitemap but the single film.
 **The player's bar is the host's**: `{{ music_player_bar() }}` once in its
 layout, before `</body>`, so the music goes on from page to page of a
 Turbo site and is there on the home page. It loads `player.js` itself.
-Its cross (`[data-music-close]`, or Escape with the focus in the bar) stops
-the music and hides the bar - `MusicPlayer.close()`, the `music:close`
-event; playing anything brings it back. `html.music-is-playing` while it
+Its cross (`[data-music-close]`) stops the music and hides the bar -
+`MusicPlayer.close()`, the `music:close` event; playing anything brings it
+back. Escape, with the focus in the bar, folds the sheet, then tucks the bar
+into its handle: the music goes on. `html.music-is-playing` while it
 sounds, `html.music-playing-bar` while the bar shows.
 
 Twig, for a host's own pages:

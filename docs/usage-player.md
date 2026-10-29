@@ -35,10 +35,6 @@ seconds, **Shift+arrows** change track. Its cross (`[data-music-close]`) stops t
 hides the bar; playing anything brings it back. **Escape**, with the focus in the bar, folds
 the sheet, then tucks the bar into its handle - the music goes on.
 
-> [!WARNING]
-> Known defect: the README says Escape stops the music and hides the bar, as the cross does;
-> `player.js` (line 916) only folds the sheet or tucks the bar, and the music goes on.
-
 On `<html>`: `music-is-playing` while it sounds, `music-playing-bar` while the bar shows.
 The bar's `data-music-waves` is `off`, `static` or `live` (from `music.player.waves` and
 `live_waves`).
