@@ -2,6 +2,7 @@
 
 namespace Base\Music\Entity;
 
+use Base\Contract\Link;
 use Base\Database\Attribute\DiscriminatorEntry;
 use Base\Database\Attribute\Uploader;
 use Base\Entity\Thread;
@@ -33,7 +34,7 @@ class Video extends Thread implements LinkableInterface
 
     public function __toLink(array $routeParameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): ?string
     {
-        return $this->getRouter()->generate('music_video', array_merge($routeParameters, ['slug' => $this->getSlug()]), $referenceType);
+        return Link::to('music_video', array_merge($routeParameters, ['slug' => $this->getSlug()]), $referenceType);
     }
 
     /** The film itself, when the site hosts it. */
