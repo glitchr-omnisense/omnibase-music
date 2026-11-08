@@ -2,7 +2,7 @@
 
 namespace Base\Music\Form;
 
-use Base\Field\Type\AudioType;
+use Omnibridge\Symfony\Omnibase\Field\Type\AudioType;
 use Base\Music\Entity\Track;
 use Base\Music\Entity\Work;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
