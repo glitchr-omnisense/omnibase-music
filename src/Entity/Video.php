@@ -71,7 +71,7 @@ class Video extends Thread implements LinkableInterface
     #[ORM\Column(type: 'date', nullable: true)]
     protected ?\DateTimeInterface $recordedAt = null;
 
-    /** "Elbphilharmonie, Hamburg". */
+    /** "Philharmonie, Strasbourg". */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $venue = null;
 

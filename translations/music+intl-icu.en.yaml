@@ -184,7 +184,7 @@ admin:
     links: "Platforms"
     links_help: "One address per platform. The label comes first on the site, from the Label (and the page above)."
     awards: "Awards"
-    awards_help: "One per line: “CD of the year — Radio România Muzical”."
+    awards_help: "One per line: “CD of the year — Radio Exemple”."
     content: "Liner notes"
     action:
       complete: "Complete"
@@ -239,7 +239,7 @@ admin:
     url: "Site"
     shop_url: "Shop"
     release_url_pattern: "Address of a record"
-    release_url_pattern_help: "With '{catalogue}', '{upc}' or '{slug}': https://www.es-dur.de/releases/'{catalogue}'"
+    release_url_pattern_help: "With '{catalogue}', '{upc}' or '{slug}': https://records.example/releases/'{catalogue}'"
     country: "Country"
     description: "Description"
   work:

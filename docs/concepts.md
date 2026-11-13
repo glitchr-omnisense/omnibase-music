@@ -44,7 +44,7 @@ Methods:
 - `getLabelLink()` - the label's page of this record when there is one (`labelUrl` or the
   pattern), else the label's shop, else its site.
 - `getAwardList()` - each line of `awards` as `{title, by}`, split on the first dash between
-  spaces (`CD of the year — Radio România Muzical`).
+  spaces (`CD of the year — Radio Exemple`).
 - `getOrderedTracks()`, `getDiscs()` (tracks by disc), `getPlays()` (the tracks' plays
   together), `getDuration()` (the sum, or `null` when a track has no length).
 - `addTrack()` gives a track without a position the next one.
@@ -89,7 +89,7 @@ forgets the peaks. `setBlockedIn()` keeps two-letter codes, upper-cased and sort
 `url`, `shopUrl`, `releaseUrlPattern`, `country` (ISO, upper-cased), `description`.
 
 `releaseUrl(Release $release): ?string` fills the pattern
-(`https://www.es-dur.de/releases/{catalogue}`) with `{catalogue}`, `{upc}` or `{slug}`,
+(`https://records.example/releases/{catalogue}`) with `{catalogue}`, `{upc}` or `{slug}`,
 URL-encoded; `null` without a pattern, or when the record lacks a value the pattern asks for.
 
 ## `Work`
@@ -127,7 +127,7 @@ URL-encoded; `null` without a pattern, or when the record lacks a value the patt
 `description`, `visible`, `featured`. `getOrigin()` is "Cremona, 1690".
 
 `Performer` (`music_performer`): `name`, `kind` (`PerformerKind`), `role` ("piano"), `url`,
-`position`. `__toString()` is "Guillaume Vincent, piano".
+`position`. `__toString()` is "Paul Exemple, piano".
 
 `Playlist` (`music_playlist`): `title`, `slug`, `url` (not blank, a URL with a TLD), `kind`
 (`PlaylistKind`, `OWN` by default), `description`, `featured`, `position`, `visible`.

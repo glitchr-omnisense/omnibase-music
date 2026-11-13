@@ -20,9 +20,9 @@ final class PlaylistTest extends TestCase
 
     public function testTheLinkCarriesTheTitle(): void
     {
-        $link = (new Playlist())->setTitle('Anaëlle Tourret')->setUrl('https://open.spotify.com/artist/0abc')->getLink();
+        $link = (new Playlist())->setTitle('Jeanne Exemple')->setUrl('https://open.spotify.com/artist/0abc')->getLink();
 
         self::assertSame(Platform::SPOTIFY, $link->platform);
-        self::assertSame('Anaëlle Tourret', $link->title());
+        self::assertSame('Jeanne Exemple', $link->title());
     }
 }

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * The house a recording came out on - ES-DUR, FARAO classics - and the one
+ * The house a recording came out on - Exemple Records, Exemple Classics - and the one
  * the site puts forward: its logo next to the cover, "released by" above
  * the track list, "buy it at the label" before any streaming platform.
  *
@@ -53,7 +53,7 @@ class Label
 
     /**
      * How the page of a release is written at the label, with {catalogue},
-     * {upc} and {slug} for the release's own: "https://www.es-dur.de/releases/{catalogue}".
+     * {upc} and {slug} for the release's own: "https://records.example/releases/{catalogue}".
      */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $releaseUrlPattern = null;

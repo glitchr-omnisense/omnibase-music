@@ -14,7 +14,7 @@ class LabelRepository extends ServiceEntityRepository
         parent::__construct($registry, Label::class);
     }
 
-    /** The label a catalogue names, whatever the case it writes it in ("Es-Dur", "ES-DUR"). */
+    /** The label a catalogue names, whatever the case it writes it in ("Exemple records", "EXEMPLE RECORDS"). */
     public function findOneByName(string $name): ?Label
     {
         return $this->createQueryBuilder('l')

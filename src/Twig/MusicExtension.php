@@ -107,8 +107,8 @@ final class MusicExtension extends AbstractExtension
     }
 
     /**
-     * Who plays with the musician, as one line: "Guillaume Vincent, piano",
-     * "Ensemble Sur Le Pont, Michel Deneuve, conductor" - the template puts
+     * Who plays with the musician, as one line: "Paul Exemple, piano",
+     * "Ensemble Exemple, Michel Deneuve, conductor" - the template puts
      * "with" before it in the visitor's language.
      */
     public static function performers(Release|Video|null $subject): string

@@ -4,8 +4,7 @@ A musician's site on [omnibase](https://github.com/glitchr-omnisense/omnibase):
 the records and the label that released them, the repertoire, the films,
 the instrument, the people who play along - and one player for the whole
 page, with no dependency. Written first for two classical musicians: a
-harpist whose albums came out on ES-DUR, a violinist whose sonatas came out
-on FARAO classics. **The label goes first, everywhere**: its logo next to
+harpist and a violinist, each with a record label. **The label goes first, everywhere**: its logo next to
 the sleeve, "released by", "buy it at the label" as the first button of the
 page, and only then the streaming platforms.
 
@@ -18,9 +17,9 @@ Six things, each an entity, its back office, its pages and its Twig:
   single, EP, live, compilation), its `Label` and its catalogue number
   there, its UPC, its date ("announced", with a pre-save link, before it is
   out), its sleeve, its `Track`s, who plays on it, the prizes it won (one a
-  line: "CD of the year — Radio România Muzical") and its links, one per
+  line: "CD of the year — Radio Exemple") and its links, one per
   platform. A `Label` knows its site, its shop, and how the page of one of
-  its records is written - `https://www.es-dur.de/releases/{catalogue}`,
+  its records is written - `https://records.example/releases/{catalogue}`,
   with `{catalogue}`, `{upc}` or `{slug}` - so a record needs only its
   number to link to its label; a record's own `labelUrl` wins over the
   pattern. `Release::getPlatformLinks()` gives Omnisong's `PlatformLinks`
@@ -40,13 +39,13 @@ Six things, each an entity, its back office, its pages and its Twig:
   when it was filmed, the work played, the record it belongs to. A
   platform's iframe never loads with the page: the poster and a play
   button first, then youtube-nocookie.com or Vimeo with `dnt=1`.
-- **Instrument.** An `Instrument`: "Francesco Ruggeri", a violin, Cremona
-  1690, its model, whose hands it went through ("ex-…"), the foundation that
+- **Instrument.** An `Instrument`: "Antonio Stradivari", a violin, Cremona
+  1715, its model, whose hands it went through ("ex-…"), the foundation that
   lends it, a picture. `music_instrument()` gives the featured one;
   `/instrument` shows the visible ones.
 - **Performers.** A `Performer` - a person, an ensemble, an orchestra, a
   conductor - and their role ("piano"), shared by the records and the
-  films: `music_performers(release)` writes "Guillaume Vincent, piano".
+  films: `music_performers(release)` writes "Paul Exemple, piano".
 - **Playlists.** A `Playlist`: a playlist or an artist profile on Spotify,
   Apple Music, Deezer, YouTube or SoundCloud (the platform is read off the
   address) - the musician's own (`OWN`), the musician's picks
@@ -56,8 +55,11 @@ Six things, each an entity, its back office, its pages and its Twig:
 ## Install
 
 ```bash
-composer require omnibase/music:dev-main
+composer require omnibase/music
 ```
+
+Stable releases follow semantic versioning: this installs the latest 1.x, with omnisense/omnibase 5.1 or later
+on Symfony (omnibridge/symfony) and Doctrine ORM (DoctrineBundle), omnibase/admin for the back office. No `minimum-stability` setting is needed.
 
 ```php
 // config/bundles.php
@@ -158,13 +160,13 @@ one, and the tracks - matched by their ISRC, else their disc and place -
 with their length and preview. **Nothing typed by hand is overwritten**:
 only empty fields are filled, and the label's link never comes from a
 catalogue. A catalogue that does not answer is not "not found": the flash
-says which one was down, try again later. Looked up today, for example:
+says which one was down, try again later. What a lookup gives, for example (invented records):
 
-- Anaëlle Tourret, *Perspectives Concertantes* - iTunes 1793146044,
-  28 February 2025, ℗ C2 Hamburg, on ES-DUR;
-- Anaëlle Tourret, *Perspectives* - iTunes 1594656563, 12 November 2021;
-- Brieuc Vourch & Guillaume Vincent, *Strauss & Franck: Sonatas for Violin
-  and Piano* - iTunes 1576897066, 17 July 2021, ℗ FARAO classics.
+- Jeanne Exemple, *Harp Concertos* - iTunes 1000000001,
+  28 February 2025, ℗ Exemple Records;
+- Jeanne Exemple, *Harp Solos* - iTunes 1000000002, 12 November 2021;
+- Jean Exemple & Paul Exemple, *Sonatas for Violin
+  and Piano* - iTunes 1000000003, 17 July 2021, ℗ Exemple Classics.
 
 ## The player
 

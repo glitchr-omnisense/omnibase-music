@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Who plays with the musician: a pianist, a quartet, an orchestra, its
  * conductor. Shared by the releases and the videos; music_performers()
- * writes the line under a title: "with Guillaume Vincent, piano".
+ * writes the line under a title: "with Paul Exemple, piano".
  */
 #[ORM\Entity(repositoryClass: PerformerRepository::class)]
 #[ORM\Table(name: 'music_performer')]

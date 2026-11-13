@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * What the musician plays: a Francesco Ruggeri violin, Cremona 1690; a
+ * What the musician plays: a Antonio Stradivari violin, Cremona 1715; a
  * concert harp. Its maker, its year and place, the model it follows, whose
  * hands it went through, and the foundation that lends it when one does.
  * music_instrument() gives the featured one; /instrument shows the visible ones.
@@ -23,7 +23,7 @@ class Instrument
     #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /** The name it goes by: "Francesco Ruggeri". */
+    /** The name it goes by: "Antonio Stradivari". */
     #[ORM\Column(length: 160)]
     #[Assert\NotBlank]
     protected ?string $name = null;
@@ -46,7 +46,7 @@ class Instrument
     #[ORM\Column(length: 160, nullable: true)]
     protected ?string $model = null;
 
-    /** Whose it was: "ex-Albert Sammons". */
+    /** Whose it was: "ex-Jeanne Exemple". */
     #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $provenance = null;
 

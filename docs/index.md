@@ -3,12 +3,12 @@
 A musician's site on [omnisense/omnibase](https://github.com/glitchr-omnisense/omnibase): the
 records and the label that released them, the repertoire, the films, the instrument, the
 people who play along - and one player for the whole page, with no JavaScript dependency. It
-is a Symfony bundle (`Base\Music\MusicBundle`) on the core 3 or 4, with its back office on
+is a Symfony bundle (`Base\Music\MusicBundle`) on omnisense/omnibase 5.1 or later, with its back office on
 omnibase/admin and its catalogues through
 [omnisense/omnisong](https://github.com/glitchr-omnisense/omnisong).
 
-It was written first for two classical musicians - a harpist whose albums came out on
-ES-DUR, a violinist whose sonatas came out on FARAO classics - and keeps one rule of theirs:
+It was written first for two classical musicians - a harpist and a violinist,
+each with a record label - and keeps one rule of theirs:
 **the label goes first**. Its logo beside the sleeve, "released by", "buy it at the label" as
 the first button, and only then the streaming platforms (`music.label_first`).
 

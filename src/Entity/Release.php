@@ -87,7 +87,7 @@ class Release extends Thread implements LinkableInterface
     #[ORM\Column(type: 'json', nullable: true)]
     protected ?array $links = null;
 
-    /** One per line: "CD of the year — Radio România Muzical". */
+    /** One per line: "CD of the year — Radio Exemple". */
     #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $awards = null;
 
@@ -225,7 +225,7 @@ class Release extends Thread implements LinkableInterface
 
     /**
      * The prizes, a line each: what was won, and who gave it when the line
-     * names them after a dash ("CD of the year — Radio România Muzical").
+     * names them after a dash ("CD of the year — Radio Exemple").
      *
      * @return list<array{title: string, by: ?string}>
      */

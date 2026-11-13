@@ -8,7 +8,7 @@ order: 10
 ## Requirements
 
 What `composer.json` requires: PHP 8.2 or later, `doctrine/orm` 2.15 or 3,
-`omnisense/omnibase` 3.0, 4.0 or 5.0, `omnibridge/symfony` 1.x, `omnibase/admin`,
+`omnisense/omnibase` 5.1 or later, `omnibridge/symfony` 1.1 or later, `doctrine/doctrine-bundle`, `omnibase/admin`,
 `omnisense/omnisong` 1.x, and `symfony/config`, `dependency-injection`, `form`,
 `http-kernel`, `security-bundle`, `process` and `twig-bundle` 6, 7 or 8.
 
@@ -19,7 +19,7 @@ films (`apt install ffmpeg`, `apk add ffmpeg`); without it, both are skipped and
 ## The bundles
 
 ```bash
-composer require omnibase/music:dev-main
+composer require omnibase/music
 ```
 
 ```php

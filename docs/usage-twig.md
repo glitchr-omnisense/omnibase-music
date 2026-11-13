@@ -25,7 +25,7 @@ order: 35
 | `music_videos(limit = null)` | the published films |
 | `music_playlists(kind = null)` | the visible playlists, of a kind (`own`, `recommended`, `artist`) |
 | `music_instrument()` | the featured instrument |
-| `music_performers(release \| video)` | "Guillaume Vincent, piano · Ensemble Sur Le Pont" - the template puts "with" before it |
+| `music_performers(release \| video)` | "Paul Exemple, piano · Ensemble Exemple" - the template puts "with" before it |
 | `music_platform_icon(platform)` | Font Awesome classes: the brand's mark where Font Awesome Free has one (Spotify, Apple, YouTube, Deezer, Amazon, Bandcamp, SoundCloud, Napster), a bag for the shop, a disc for the label, Presto and HIGHRESAUDIO, a note otherwise |
 | `music_source(track)` | the track's source `{kind, src, whole}`, `null` when nothing plays or it cannot be heard now or here |
 | `music_unavailable(track)` | why it cannot be heard (`{reason: 'later', date}` or `{reason: 'region'}`), or `null` |

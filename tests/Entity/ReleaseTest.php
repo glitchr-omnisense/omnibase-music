@@ -26,23 +26,23 @@ final class ReleaseTest extends TestCase
         return $release;
     }
 
-    private static function esDur(): Label
+    private static function exempleRecords(): Label
     {
-        return (new Label())->setName('ES-DUR')
-            ->setUrl('https://www.es-dur.de')
-            ->setReleaseUrlPattern('https://www.es-dur.de/releases/{catalogue}');
+        return (new Label())->setName('Exemple Records')
+            ->setUrl('https://records.example')
+            ->setReleaseUrlPattern('https://records.example/releases/{catalogue}');
     }
 
-    /** Anaëlle Tourret, "Perspectives Concertantes" (ES-DUR, 28 February 2025). */
-    private static function perspectivesConcertantes(): Release
+    /** Jeanne Exemple, "Harp Concertos" (Exemple Records, 28 February 2025). */
+    private static function harpConcertos(): Release
     {
         return self::release()
-            ->setLabel(self::esDur())
+            ->setLabel(self::exempleRecords())
             ->setCatalogue('ES 2099') // a catalogue number for the test
             ->setReleasedAt(new \DateTimeImmutable('2025-02-28'))
             ->setLinks([
                 Platform::DEEZER->value => 'https://www.deezer.com/album/1',
-                Platform::APPLE_MUSIC->value => 'https://music.apple.com/de/album/perspectives-concertantes/1793146044',
+                Platform::APPLE_MUSIC->value => 'https://music.apple.com/de/album/harp-concertos/1000000001',
                 Platform::SPOTIFY->value => 'https://open.spotify.com/album/abc',
                 Platform::QOBUZ->value => '',
             ]);
@@ -50,12 +50,12 @@ final class ReleaseTest extends TestCase
 
     public function testTheLabelComesFirstAtTheReleasePageItsPatternGives(): void
     {
-        $links = self::perspectivesConcertantes()->getPlatformLinks();
+        $links = self::harpConcertos()->getPlatformLinks();
         $first = $links->first();
 
         self::assertSame(Platform::LABEL, $first->platform);
-        self::assertSame('ES-DUR', $first->title());
-        self::assertSame('https://www.es-dur.de/releases/ES%202099', $first->url);
+        self::assertSame('Exemple Records', $first->title());
+        self::assertSame('https://records.example/releases/ES%202099', $first->url);
         self::assertSame(
             [Platform::LABEL, Platform::SPOTIFY, Platform::APPLE_MUSIC, Platform::DEEZER],
             array_map(static fn ($link) => $link->platform, $links->all()),
@@ -65,41 +65,41 @@ final class ReleaseTest extends TestCase
 
     public function testTheReleasesOwnPageAtTheLabelWinsOverThePattern(): void
     {
-        $release = self::perspectivesConcertantes()->setLabelUrl('https://www.es-dur.de/en/perspectives-concertantes');
+        $release = self::harpConcertos()->setLabelUrl('https://records.example/en/harp-concertos');
 
-        self::assertSame('https://www.es-dur.de/en/perspectives-concertantes', $release->getPlatformLinks()->first()->url);
-        self::assertSame('https://www.es-dur.de/en/perspectives-concertantes', $release->getLabelLink()->url);
+        self::assertSame('https://records.example/en/harp-concertos', $release->getPlatformLinks()->first()->url);
+        self::assertSame('https://records.example/en/harp-concertos', $release->getLabelLink()->url);
     }
 
     public function testWithoutWhatThePatternAsksTheLabelsSiteIsUsed(): void
     {
-        $release = self::perspectivesConcertantes()->setCatalogue(null);
+        $release = self::harpConcertos()->setCatalogue(null);
 
-        self::assertNull(self::esDur()->releaseUrl($release));
-        self::assertSame('https://www.es-dur.de', $release->getPlatformLinks()->first()->url);
+        self::assertNull(self::exempleRecords()->releaseUrl($release));
+        self::assertSame('https://records.example', $release->getPlatformLinks()->first()->url);
     }
 
     public function testThePatternTakesTheUpcAndTheSlugToo(): void
     {
-        $label = (new Label())->setName('FARAO classics')->setReleaseUrlPattern('https://www.farao-classics.de/{slug}?ean={upc}');
-        $release = self::release()->setLabel($label)->setUpc('4 025438 081123')->setSlug('strauss-franck-sonatas');
+        $label = (new Label())->setName('Exemple Classics')->setReleaseUrlPattern('https://classics.example/{slug}?ean={upc}');
+        $release = self::release()->setLabel($label)->setUpc('4 000000 000001')->setSlug('violin-sonatas');
 
-        self::assertSame('4025438081123', $release->getUpc(), 'a UPC keeps its digits only');
-        self::assertSame('https://www.farao-classics.de/strauss-franck-sonatas?ean=4025438081123', $label->releaseUrl($release));
+        self::assertSame('4000000000001', $release->getUpc(), 'a UPC keeps its digits only');
+        self::assertSame('https://classics.example/violin-sonatas?ean=4000000000001', $label->releaseUrl($release));
     }
 
     public function testBuyItAtTheLabelOpensTheRecordsPageElseTheShop(): void
     {
-        $label = self::esDur()->setShopUrl('https://shop.es-dur.de');
-        $release = self::perspectivesConcertantes()->setLabel($label);
+        $label = self::exempleRecords()->setShopUrl('https://shop.records.example');
+        $release = self::harpConcertos()->setLabel($label);
         $links = $release->getPlatformLinks();
 
         self::assertSame([Platform::LABEL, Platform::SHOP], [$links->all()[0]->platform, $links->all()[1]->platform]);
-        self::assertSame('https://www.es-dur.de/releases/ES%202099', $release->getLabelLink()->url, 'the record\'s own page at the label first');
+        self::assertSame('https://records.example/releases/ES%202099', $release->getLabelLink()->url, 'the record\'s own page at the label first');
 
         $release->setCatalogue(null);
-        self::assertSame('https://shop.es-dur.de', $release->getLabelLink()->url, 'else the label\'s shop');
-        self::assertSame('ES-DUR', $release->getLabelLink()->title());
+        self::assertSame('https://shop.records.example', $release->getLabelLink()->url, 'else the label\'s shop');
+        self::assertSame('Exemple Records', $release->getLabelLink()->title());
     }
 
     public function testWithoutALabelTheLinksAreTheLinks(): void
@@ -108,15 +108,15 @@ final class ReleaseTest extends TestCase
 
         self::assertSame(Platform::SPOTIFY, $release->getPlatformLinks()->first()->platform);
         self::assertNull($release->getLabelLink());
-        self::assertSame(Platform::LABEL, $release->setLabelUrl('https://www.farao-classics.de/x')->getPlatformLinks()->first()->platform);
+        self::assertSame(Platform::LABEL, $release->setLabelUrl('https://classics.example/x')->getPlatformLinks()->first()->platform);
     }
 
     public function testAwardsOneALine(): void
     {
-        $release = self::release()->setAwards("CD of the year — Radio România Muzical\n\n  Diapason d'or  \nSupersonic – Pizzicato");
+        $release = self::release()->setAwards("CD of the year — Radio Exemple\n\n  Diapason d'or  \nSupersonic – Pizzicato");
 
         self::assertSame([
-            ['title' => 'CD of the year', 'by' => 'Radio România Muzical'],
+            ['title' => 'CD of the year', 'by' => 'Radio Exemple'],
             ['title' => "Diapason d'or", 'by' => null],
             ['title' => 'Supersonic', 'by' => 'Pizzicato'],
         ], $release->getAwardList());

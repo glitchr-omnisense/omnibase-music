@@ -20,8 +20,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Importer::apply(): what a catalogue found goes into the empty fields
- * only. Brieuc Vourch & Guillaume Vincent, "Strauss & Franck: Sonatas for
- * Violin and Piano" (FARAO classics, iTunes collection 1576897066).
+ * only. Jean Exemple & Paul Exemple, "Sonatas for Violin
+ * and Piano" (Exemple Classics, iTunes collection 1000000003).
  */
 final class ImporterTest extends TestCase
 {
@@ -38,10 +38,10 @@ final class ImporterTest extends TestCase
     private static function found(): CatalogueRelease
     {
         return new CatalogueRelease(
-            title: 'Strauss & Franck: Sonatas for Violin and Piano',
-            artist: 'Brieuc Vourch & Guillaume Vincent',
-            label: new CatalogueLabel('FARAO classics'),
-            upc: '4025438081123',
+            title: 'Sonatas for Violin and Piano',
+            artist: 'Jean Exemple & Paul Exemple',
+            label: new CatalogueLabel('Exemple Classics'),
+            upc: '4000000000001',
             releasedAt: new \DateTimeImmutable('2021-07-17'),
             coverUrl: 'https://is1-ssl.mzstatic.com/image/thumb/Music/cover/600x600bb.jpg',
             tracks: [
@@ -49,9 +49,9 @@ final class ImporterTest extends TestCase
                 new CatalogueTrack('Violin Sonata in E-flat major, Op. 18: II. Improvisation', 2, 1, 389, 'DEF470001002', 'https://audio-ssl.itunes.apple.com/2.m4a'),
             ],
             links: new PlatformLinks([
-                new PlatformLink(Platform::LABEL, 'https://catalogue.example/farao', null, 'FARAO classics'),
+                new PlatformLink(Platform::LABEL, 'https://catalogue.example/classics', null, 'Exemple Classics'),
                 new PlatformLink(Platform::SPOTIFY, 'https://open.spotify.com/album/from-catalogue'),
-                new PlatformLink(Platform::APPLE_MUSIC, 'https://music.apple.com/de/album/strauss-franck/1576897066'),
+                new PlatformLink(Platform::APPLE_MUSIC, 'https://music.apple.com/de/album/violin-sonatas/1000000003'),
             ]),
         );
     }
@@ -74,14 +74,14 @@ final class ImporterTest extends TestCase
         $report = $this->importer()->apply($release, self::found());
 
         self::assertTrue($report->found);
-        self::assertSame('Strauss & Franck: Sonatas for Violin and Piano', $release->getTitle(), 'no title yet: the catalogue\'s');
+        self::assertSame('Sonatas for Violin and Piano', $release->getTitle(), 'no title yet: the catalogue\'s');
         self::assertSame('2021-07-16', $release->getReleasedAt()->format('Y-m-d'));
-        self::assertSame('4025438081123', $release->getUpc());
+        self::assertSame('4000000000001', $release->getUpc());
         self::assertSame('https://is1-ssl.mzstatic.com/image/thumb/Music/cover/600x600bb.jpg', $release->getCoverUrl());
-        self::assertSame('FARAO classics', $release->getLabel()->getName(), 'a label the site did not know is made');
+        self::assertSame('Exemple Classics', $release->getLabel()->getName(), 'a label the site did not know is made');
         self::assertSame([
             Platform::SPOTIFY->value => 'https://open.spotify.com/album/by-hand',
-            Platform::APPLE_MUSIC->value => 'https://music.apple.com/de/album/strauss-franck/1576897066',
+            Platform::APPLE_MUSIC->value => 'https://music.apple.com/de/album/violin-sonatas/1000000003',
         ], $release->getLinks(), 'the hand-typed link stays, the label\'s never comes from a catalogue');
         self::assertContains('links.apple_music', $report->filled);
         self::assertNotContains('releasedAt', $report->filled);
@@ -113,12 +113,12 @@ final class ImporterTest extends TestCase
 
     public function testAKnownLabelIsReusedAndASecondRunChangesNothing(): void
     {
-        $farao = (new Label())->setName('FARAO classics');
+        $classics = (new Label())->setName('Exemple Classics');
         $release = self::release();
-        $importer = $this->importer($farao);
+        $importer = $this->importer($classics);
 
         $importer->apply($release, self::found());
-        self::assertSame($farao, $release->getLabel());
+        self::assertSame($classics, $release->getLabel());
 
         $again = $importer->apply($release, self::found());
         self::assertFalse($again->changedSomething());

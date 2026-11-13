@@ -39,7 +39,7 @@ final class ReleaseArtworkTest extends TestCase
 
     public function testAnUploadedCoverIsItsAddressOnTheSite(): void
     {
-        self::assertSame('/uploads/release/cover/perspectives.jpg', self::release('/srv/app/public/uploads/release/cover/perspectives.jpg', 'https://is1-ssl.mzstatic.com/x.jpg')->getArtwork(), 'the upload first, by its address');
+        self::assertSame('/uploads/release/cover/sleeve.jpg', self::release('/srv/app/public/uploads/release/cover/sleeve.jpg', 'https://is1-ssl.mzstatic.com/x.jpg')->getArtwork(), 'the upload first, by its address');
         self::assertSame('/uploads/release/cover/a.jpg', self::release('/uploads/release/cover/a.jpg')->getArtwork(), 'already an address: as it is');
     }
 
