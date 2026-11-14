@@ -26,7 +26,7 @@ composer require omnibase/music
 // config/bundles.php
 return [
     // ...
-    Base\BaseBundle::class => ['all' => true],
+    Omnibridge\Symfony\Omnibase\BaseBundle::class => ['all' => true],
     Base\Admin\AdminBundle::class => ['all' => true],
     Omnisong\Bridge\Symfony\OmnisongBundle::class => ['all' => true],
     Base\Music\MusicBundle::class => ['all' => true],
