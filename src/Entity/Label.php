@@ -5,7 +5,7 @@ namespace Base\Music\Entity;
 use Base\Database\Attribute\Slugify;
 use Base\Database\Attribute\Uploader;
 use Base\Music\Repository\LabelRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 

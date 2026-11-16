@@ -2,10 +2,11 @@
 
 namespace Base\Music\Form;
 
-use Omnibridge\Symfony\Omnibase\Field\Type\AudioType;
+use Base\Field\Type\SelectType;
+use Base\Video\Entity\Video;
+use Base\Field\Type\AudioType;
 use Base\Music\Entity\Track;
 use Base\Music\Entity\Work;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -35,7 +36,7 @@ class TrackType extends AbstractType
             ->add('disc', IntegerType::class, ['label' => '@music.admin.track.disc', 'empty_data' => '1', 'attr' => ['min' => 1, 'max' => 99]])
             ->add('position', IntegerType::class, ['label' => '@music.admin.track.position', 'required' => false, 'attr' => ['min' => 1]])
             ->add('title', TextType::class, ['label' => '@music.admin.track.title', 'required' => false, 'help' => '@music.admin.track.title_help'])
-            ->add('work', EntityType::class, ['label' => '@music.admin.track.work', 'class' => Work::class, 'required' => false, 'placeholder' => '—'])
+            ->add('work', SelectType::class, ['label' => '@music.admin.track.work', 'class' => Work::class, 'required' => false, 'placeholder' => '—'])
             ->add('movement', TextType::class, ['label' => '@music.admin.track.movement', 'required' => false])
             ->add('duration', IntegerType::class, ['label' => '@music.admin.track.duration', 'required' => false, 'help' => '@music.admin.track.duration_help', 'attr' => ['min' => 0]])
             ->add('isrc', TextType::class, ['label' => '@music.admin.track.isrc', 'required' => false, 'attr' => ['maxlength' => 15]])
@@ -43,6 +44,7 @@ class TrackType extends AbstractType
             ->add('whole', CheckboxType::class, ['label' => '@music.admin.track.whole', 'required' => false, 'help' => '@music.admin.track.whole_help'])
             ->add('previewUrl', UrlType::class, ['label' => '@music.admin.track.preview_url', 'required' => false, 'default_protocol' => 'https', 'help' => '@music.admin.track.preview_url_help'])
             ->add('performers', TextType::class, ['label' => '@music.admin.track.performers', 'required' => false])
+            ->add('videos', SelectType::class, ['label' => '@music.admin.track.videos', 'class' => Video::class, 'multiple' => true, 'required' => false, 'help' => '@music.admin.track.videos_help'])
             // A single out before its album, and the countries its rights stop at (Service\Availability).
             ->add('availableFrom', DateType::class, ['label' => '@music.admin.track.available_from', 'required' => false, 'widget' => 'single_text', 'input' => 'datetime_immutable', 'help' => '@music.admin.track.available_from_help'])
             ->add('blockedIn', CountryType::class, ['label' => '@music.admin.track.blocked_in', 'required' => false, 'multiple' => true, 'help' => '@music.admin.track.blocked_in_help'])

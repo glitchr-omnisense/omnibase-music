@@ -224,6 +224,8 @@ admin:
     blocked_in: "Nicht abgespielt in"
     blocked_in_help: "Die Länder, die seine Rechte nicht abdecken: dort wird er ausgegraut angezeigt und nicht abgespielt."
     performers: "Mitwirkende dieses Titels"
+    videos: "Videos"
+    videos_help: "Die Filme dieses Titels (omnibase/video): ein Konzert, eine Studioaufnahme, ein Clip."
   lookup:
     title: "Album suchen"
     lead: "Ein Link oder eine UPC: die Kataloge legen das Album an oder vervollständigen es."
@@ -255,29 +257,6 @@ admin:
     visible: "Auf der Website"
     movements: "Sätze"
     movements_help: "Einer pro Zeile."
-  video:
-    title: "Titel"
-    poster: "Vorschaubild"
-    published_at: "Veröffentlicht am"
-    youtube: "YouTube"
-    youtube_help: "Die Adresse oder die ID."
-    vimeo: "Vimeo"
-    file: "Datei"
-    duration: "Dauer"
-    duration_help: "In Sekunden."
-    recorded_at: "Gefilmt am"
-    venue: "Ort"
-    featured: "Hervorgehoben"
-    work: "Werk"
-    release: "Album"
-    performers: "Mit"
-    headline: "Untertitel"
-    excerpt: "Text"
-    action:
-      poster: "Aus dem Film wählen"
-    flash:
-      poster: "Ein Vorschaubild wurde aus den Bildern des Films gewählt: das schärfste, am besten belichtete, mit dem Musiker oder dem Instrument."
-      no_poster: "Kein Bild des Films war zu bekommen (keine Antwort der Plattform, oder kein ffmpeg für eine Datei der Website)."
   instrument:
     name: "Name"
     image: "Foto"

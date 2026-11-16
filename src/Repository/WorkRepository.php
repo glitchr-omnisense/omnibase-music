@@ -3,10 +3,14 @@
 namespace Base\Music\Repository;
 
 use Base\Music\Entity\Work;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Base\Database\Repository\Finders;
+use Base\Database\Repository\ServiceEntityRepository;
 
-/** @extends ServiceEntityRepository<Work> */
+/**
+ * @method Work|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Work|null findOneBy(array $criteria, ?array $orderBy = null)
+ * @method Work[]    findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
+ */
 class WorkRepository extends ServiceEntityRepository
 {
     public const BY_FORMATION = 'formation';
@@ -14,18 +18,15 @@ class WorkRepository extends ServiceEntityRepository
     public const BY_PERIOD = 'period';
     public const GROUPS = [self::BY_FORMATION, self::BY_COMPOSER, self::BY_PERIOD];
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Finders $finders)
     {
-        parent::__construct($registry, Work::class);
+        parent::__construct($finders, Work::class);
     }
 
     /** @return list<Work> */
     public function findVisible(): array
     {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.visible = true')
-            ->orderBy('w.position', 'ASC')->addOrderBy('w.year', 'ASC')->addOrderBy('w.title', 'ASC')
-            ->getQuery()->getResult();
+        return $this->findBy(['visible' => true], ['position' => 'ASC', 'year' => 'ASC', 'title' => 'ASC']);
     }
 
     /**

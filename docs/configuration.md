@@ -112,6 +112,6 @@ Kept in the core's setting bag, not in the configuration:
 | `Player` | `Omnisong\Player\EmbedderInterface`, `Omnisong\Player\EmbedOptions`, a logger |
 | `Importer` | `Omnisong\Catalog\Catalog` |
 | `Plays` | the core's user-agent classifier; the cache pool (`CacheItemPoolInterface`) is required |
-| `Peaks`, `PosterPicker` | a logger; `PosterPicker` an HTTP client; both take the ffmpeg binary as `$ffmpeg` (`ffmpeg`, a service argument to set another path) |
+| `Peaks` | a logger; it takes the ffmpeg binary as `$ffmpeg` (`ffmpeg`, a service argument to set another path) |
 | `JsonLd`, `MusicExtension` | the core's `SettingBagInterface` |
 | `Availability` | the `RequestStack` |

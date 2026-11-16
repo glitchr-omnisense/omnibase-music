@@ -124,7 +124,7 @@ class ReleaseCrudController extends AbstractCrudController
         $release = $this->findEntity($entityId);
         try {
             $report = $this->importer->complete($release);
-            $this->entityManager->flush();
+            $this->unitOfWork->flush();
             $this->flashReport($report);
         } catch (\InvalidArgumentException) {
             $this->addFlash('warning', new TranslatableMessage('admin.release.flash.no_reference', [], 'music'));
@@ -152,7 +152,7 @@ class ReleaseCrudController extends AbstractCrudController
         foreach ($release->getTracks() as $track) {
             $done += $this->peaks->compute($track) ? 1 : 0;
         }
-        $this->entityManager->flush();
+        $this->unitOfWork->flush();
         $this->addFlash('success', new TranslatableMessage('admin.release.flash.peaks', ['count' => $done], 'music'));
 
         return $this->redirectToRecord($release);
@@ -167,7 +167,7 @@ class ReleaseCrudController extends AbstractCrudController
             try {
                 $release = $this->importer->import($this->importer->reference($value), $report);
                 if (null !== $release) {
-                    $this->entityManager->flush();
+                    $this->unitOfWork->flush();
                     $this->flashReport($report);
 
                     return $this->redirectToRecord($release, Action::EDIT);

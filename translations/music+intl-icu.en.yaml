@@ -224,6 +224,8 @@ admin:
     blocked_in: "Not played in"
     blocked_in_help: "The countries its rights do not cover: there it shows, greyed, and does not play."
     performers: "Performers on this track"
+    videos: "Videos"
+    videos_help: "The films of this track (omnibase/video): a concert, a studio take, a clip."
   lookup:
     title: "Look up a record"
     lead: "One link or one UPC: the catalogues make the record, or complete it."
@@ -255,29 +257,6 @@ admin:
     visible: "On the site"
     movements: "Movements"
     movements_help: "One per line."
-  video:
-    title: "Title"
-    poster: "Poster"
-    published_at: "Published on"
-    youtube: "YouTube"
-    youtube_help: "The address or the id."
-    vimeo: "Vimeo"
-    file: "File"
-    duration: "Length"
-    duration_help: "In seconds."
-    recorded_at: "Filmed on"
-    venue: "Venue"
-    featured: "Featured"
-    work: "Work"
-    release: "Record"
-    performers: "With"
-    headline: "Subtitle"
-    excerpt: "Text"
-    action:
-      poster: "Pick from the film"
-    flash:
-      poster: "A poster was chosen among the film's frames: the clearest, best lit, with the musician or the instrument."
-      no_poster: "No frame of the film could be had (no answer from the platform, or no ffmpeg for a file of the site)."
   instrument:
     name: "Name"
     image: "Picture"

@@ -224,6 +224,8 @@ admin:
     blocked_in: "Non diffusé en"
     blocked_in_help: "Les pays que ses droits ne couvrent pas : il s’y affiche, grisé, sans être joué."
     performers: "Interprètes de cette plage"
+    videos: "Vidéos"
+    videos_help: "Les films de ce morceau (omnibase/video) : un concert, une prise en studio, un clip."
   lookup:
     title: "Chercher un disque"
     lead: "Un lien ou un UPC : les catalogues créent le disque, ou le complètent."
@@ -255,29 +257,6 @@ admin:
     visible: "Sur le site"
     movements: "Mouvements"
     movements_help: "Un par ligne."
-  video:
-    title: "Titre"
-    poster: "Affiche"
-    published_at: "Publiée le"
-    youtube: "YouTube"
-    youtube_help: "L’adresse ou l’identifiant."
-    vimeo: "Vimeo"
-    file: "Fichier"
-    duration: "Durée"
-    duration_help: "En secondes."
-    recorded_at: "Filmée le"
-    venue: "Lieu"
-    featured: "À la une"
-    work: "Œuvre"
-    release: "Disque"
-    performers: "Avec"
-    headline: "Sous-titre"
-    excerpt: "Texte"
-    action:
-      poster: "Choisir dans le film"
-    flash:
-      poster: "Une affiche a été choisie parmi les images du film : la plus nette, la mieux éclairée, avec la musicienne ou l’instrument."
-      no_poster: "Aucune image du film n’a pu être obtenue (pas de réponse de la plateforme, ou pas de ffmpeg pour un fichier du site)."
   instrument:
     name: "Nom"
     image: "Photo"

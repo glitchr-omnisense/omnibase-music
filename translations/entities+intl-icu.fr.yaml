@@ -12,9 +12,6 @@ music:
   playlist:
     _singular: "playlist"
     _plural: "playlists"
-  video:
-    _singular: "vidéo"
-    _plural: "vidéos"
   work:
     _singular: "œuvre"
     _plural: "répertoire"

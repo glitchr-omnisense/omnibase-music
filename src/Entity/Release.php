@@ -9,10 +9,11 @@ use Base\Entity\Thread;
 use Base\Enum\ThreadState;
 use Base\Music\Enum\ReleaseType;
 use Base\Music\Repository\ReleaseRepository;
+use Base\Video\Entity\Video;
 use Base\Service\Model\LinkableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 use Omnisong\Model\Label as CatalogueLabel;
 use Omnisong\Model\PlatformLink;
 use Omnisong\Model\PlatformLinks;
@@ -31,7 +32,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 #[ORM\Entity(repositoryClass: ReleaseRepository::class)]
 #[ORM\Table(name: 'music_release')]
-#[DiscriminatorEntry(value: 'music_release')]
+#[DiscriminatorEntry(value: 'music')]
 class Release extends Thread implements LinkableInterface
 {
     public static function __iconizeStatic(): ?array
@@ -265,6 +266,23 @@ class Release extends Thread implements LinkableInterface
 
     /** @return Collection<int, Track> */
     public function getTracks(): Collection { return $this->tracks; }
+
+    /**
+     * The release's films: those of its tracks, in the tracks' order, each once (no relation of its own).
+     *
+     * @return list<Video>
+     */
+    public function getVideos(): array
+    {
+        $videos = [];
+        foreach ($this->tracks as $track) {
+            foreach ($track->getVideos() as $video) {
+                $videos[spl_object_id($video)] = $video;
+            }
+        }
+
+        return array_values($videos);
+    }
 
     public function addTrack(Track $track): self
     {

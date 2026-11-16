@@ -1,5 +1,6 @@
 {#
- # One film: a file of the site's plays in a <video> (nothing loaded before
+ # One film (omnibase/video's, of one of the site's tracks: its work, its
+ # performers and its release are the track's): a file of the site's plays in a <video> (nothing loaded before
  # the click: preload="none"); a YouTube or Vimeo film is its poster and a
  # button until the click, then the platform's iframe (youtube-nocookie,
  # Vimeo with dnt=1).
@@ -14,6 +15,11 @@
 {% block javascripts %}{{ parent() }}<script src="{{ asset('bundles/music/js/player.js') }}" defer></script>{% endblock %}
 
 {% block content %}
+{#- The film's source on omnibase/video: a file of the site's (hls, mp4) or a platform's frame (embed). -#}
+{% set playable = video.playableSource %}
+{% set frame = playable and playable.kind == 'embed' ? embed_url(playable.url) : null %}
+{% set platform = frame ? (playable.platform ?: 'embed') : null %}
+{% set src = frame ? frame.src : (playable ? playable.url : null) %}
 <article class="music music-video">
     <header class="music-head">
         <p class="music-eyebrow"><a href="{{ path('music_videos') }}">{{ '@music.videos.title'|trans }}</a></p>
@@ -21,26 +27,26 @@
         {% if video.headline %}<p class="music-lead">{{ video.headline }}</p>{% endif %}
     </header>
 
-    {% if video.local %}
-    <div class="music-poster"><video controls playsinline preload="none"{% if video.posterUrl %} poster="{{ video.posterUrl }}"{% endif %}><source src="{{ video.file }}"></video></div>
-    {% elseif video.embedUrl %}
+    {% if src and not platform %}
+    <div class="music-poster"><video controls playsinline preload="none"{% if video.poster %} poster="{{ video.poster }}"{% endif %}><source src="{{ src }}"></video></div>
+    {% elseif src %}
     <div class="music-poster" data-music-embed>
-        <template><iframe src="{{ video.embedUrl }}" title="{{ video.title }}" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen loading="lazy"></iframe></template>
-        {% if video.posterUrl %}<img src="{{ video.posterUrl }}" alt="">{% endif %}
+        <template><iframe src="{{ src }}" title="{{ video.title }}" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen loading="lazy"></iframe></template>
+        {% if video.poster %}<img src="{{ video.poster }}" alt="">{% endif %}
         <button type="button" class="music-poster-play" data-music-embed-play aria-label="{{ '@music.video.play'|trans({title: video.title}) }}"><i class="fa-solid fa-play" aria-hidden="true"></i></button>
         {% if video.duration %}<span class="music-poster-duration">{{ video.duration|music_duration }}</span>{% endif %}
     </div>
-    <p class="music-video-consent">{{ (video.youtubeId ? '@music.video.consent_youtube' : '@music.video.consent_vimeo')|trans }}{% if video.watchUrl %} · <a href="{{ video.watchUrl }}" rel="noopener" target="_blank">{{ '@music.video.watch_there'|trans }}</a>{% endif %}</p>
+    <p class="music-video-consent">{{ (platform == 'youtube' ? '@music.video.consent_youtube' : '@music.video.consent_vimeo')|trans }}{% if video.externalUrl %} · <a href="{{ video.externalUrl }}" rel="noopener" target="_blank">{{ '@music.video.watch_there'|trans }}</a>{% endif %}</p>
     {% endif %}
 
     <p class="music-video-meta">
-        {%- set meta = [video.venue, video.recordedAt ? video.recordedAt|format_date('long') : null, video.work ? video.work ~ '' : null]|filter(v => v) -%}
+        {%- set meta = [video.venue, video.recordedAt ? video.recordedAt|format_date('long') : null, track and track.work ? track.work ~ '' : null]|filter(v => v) -%}
         {{ meta|join(' · ') }}
     </p>
-    {% set performers_line = music_performers(video) %}
+    {% set performers_line = music_performers(track) %}
     {% if performers_line %}<p class="music-performers">{{ '@music.release.with'|trans({performers: performers_line}) }}</p>{% endif %}
     {% if video.excerpt %}<div class="music-prose"><p>{{ video.excerpt }}</p></div>{% endif %}
-    {% if video.release %}<p>{{ '@music.video.from_release'|trans }} <a href="{{ path('music_release', {slug: video.release.slug}) }}">{{ video.release.title }}</a></p>{% endif %}
+    {% if track and track.release %}<p>{{ '@music.video.from_release'|trans }} <a href="{{ path('music_release', {slug: track.release.slug}) }}">{{ track.release.title }}</a></p>{% endif %}
 
     {% if others|length %}
     <h2>{{ '@music.video.others'|trans }}</h2>

@@ -4,7 +4,10 @@ namespace Base\Music\Entity;
 
 use Base\Database\Attribute\Uploader;
 use Base\Music\Repository\TrackRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
+use Base\Video\Entity\Video;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -92,6 +95,21 @@ class Track
     /** @var list<string>|null ISO 3166 countries ("DE", "JP") where it is not played: the rights stop there. */
     #[ORM\Column(type: 'json', nullable: true)]
     protected ?array $blockedIn = null;
+
+    /**
+     * Its films (omnibase/video's): none, one, or several - a concert, a studio take, a clip. The work played and the
+     * performers are the track's; where and when each was filmed, the film's.
+     *
+     * @var Collection<int, Video>
+     */
+    #[ORM\ManyToMany(targetEntity: Video::class)]
+    #[ORM\JoinTable(name: 'music_track_video')]
+    protected Collection $videos;
+
+    public function __construct()
+    {
+        $this->videos = new ArrayCollection();
+    }
 
     public function __toString(): string
     {
@@ -218,6 +236,25 @@ class Track
     }
 
     public function getPerformers(): ?string { return $this->performers; }
+
+    /** @return Collection<int, Video> */
+    public function getVideos(): Collection { return $this->videos; }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos->add($video);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        $this->videos->removeElement($video);
+
+        return $this;
+    }
     public function setPerformers(?string $performers): self { $this->performers = $performers ?: null; return $this; }
 
     public function getAvailableFrom(): ?\DateTimeImmutable { return $this->availableFrom; }

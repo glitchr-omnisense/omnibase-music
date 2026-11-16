@@ -2,24 +2,26 @@
 
 namespace Base\Music\Repository;
 
+use Base\Database\Repository\Finder\Group;
 use Base\Music\Entity\Label;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Base\Database\Repository\Finders;
+use Base\Database\Repository\ServiceEntityRepository;
 
-/** @extends ServiceEntityRepository<Label> */
+/**
+ * @method Label|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Label|null findOneBy(array $criteria, ?array $orderBy = null)
+ * @method Label[]    findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
+ */
 class LabelRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Finders $finders)
     {
-        parent::__construct($registry, Label::class);
+        parent::__construct($finders, Label::class);
     }
 
     /** The label a catalogue names, whatever the case it writes it in ("Exemple records", "EXEMPLE RECORDS"). */
     public function findOneByName(string $name): ?Label
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('LOWER(l.name) = :name')->setParameter('name', mb_strtolower(trim($name)))
-            ->setMaxResults(1)
-            ->getQuery()->getOneOrNullResult();
+        return $this->findOneBy([Group::by('InsensitiveName', mb_strtolower(trim($name)))]);
     }
 }

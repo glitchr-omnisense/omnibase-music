@@ -2,6 +2,7 @@
 
 namespace Base\Music\Service;
 
+use Base\Contract\Runtime;
 use Base\Music\Entity\Track;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -39,7 +40,7 @@ class Availability
      */
     public function why(Track $track): ?array
     {
-        if (!$track->isOutOn(new \DateTimeImmutable('today'))) {
+        if (!$track->isOutOn(Runtime::clock()->now()->setTimezone(new \DateTimeZone(Runtime::find(\Base\Contract\Locales::class)?->getTimezone() ?? date_default_timezone_get()))->setTime(0, 0))) {
             return ['reason' => self::LATER, 'date' => $track->getOutDate()];
         }
         if ($track->isBlockedIn($this->country())) {

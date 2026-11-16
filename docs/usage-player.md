@@ -42,7 +42,7 @@ The bar's `data-music-waves` is `off`, `static` or `live` (from `music.player.wa
 ### Waveforms
 
 The waveform is static: the track's `peaks` (200 values, computed once on the server -
-[Waveforms and posters](usage-media.md)) drawn on a `<canvas>`, the played part in the
+[Waveforms](usage-media.md)) drawn on a `<canvas>`, the played part in the
 custom property `--music-wave-played` (`currentColor` by default), the rest in `--music-wave`
 (`rgba(127,127,127,.45)`). Without peaks, a plain line. With `music.player.live_waves`, the
 bar's canvas follows the sound through an `AnalyserNode`, unless the visitor asks for less

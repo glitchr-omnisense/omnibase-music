@@ -5,7 +5,7 @@ namespace Base\Music\Entity;
 use Base\Database\Attribute\Slugify;
 use Base\Music\Enum\PlaylistKind;
 use Base\Music\Repository\PlaylistRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 use Omnisong\Model\PlatformLink;
 use Omnisong\Platform;
 use Symfony\Component\Validator\Constraints as Assert;

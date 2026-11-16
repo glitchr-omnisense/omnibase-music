@@ -2,50 +2,59 @@
 
 namespace Base\Music\Repository;
 
+use Base\Database\Repository\Finder\Change;
+use Base\Video\Entity\Video;
+use Base\Database\Repository\Finder\Group;
 use Base\Music\Entity\Track;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Base\Database\Repository\Finders;
+use Base\Database\Repository\ServiceEntityRepository;
 
-/** @extends ServiceEntityRepository<Track> */
+/**
+ * @method Track|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Track|null findOneBy(array $criteria, ?array $orderBy = null)
+ * @method Track[]    findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
+ */
 class TrackRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Finders $finders)
     {
-        parent::__construct($registry, Track::class);
+        parent::__construct($finders, Track::class);
     }
 
     /** The tracks the player has nothing to play for: no excerpt of the site's, no preview. */
     public function countSilent(): int
     {
-        return (int) $this->createQueryBuilder('t')
-            ->select('COUNT(t.id)')
-            ->andWhere('t.sample IS NULL')->andWhere('t.previewUrl IS NULL')
-            ->getQuery()->getSingleScalarResult();
+        return (int) $this->countBySampleNullAndPreviewUrlNull();
     }
 
     /** One more play of a track: added in the database itself, so two listeners at once are two plays. */
     public function countPlay(Track $track): void
     {
-        $this->getEntityManager()
-            ->createQuery('UPDATE '.Track::class.' t SET t.plays = t.plays + 1 WHERE t.id = :id')
-            ->setParameter('id', $track->getId())
-            ->execute();
+        // plays = plays + 1 in the database itself: two listeners at once are two plays.
+        $this->updateBy(['id' => $track->getId()], ['plays' => Change::add(1)]);
     }
 
     /** The plays of every track together. */
     public function countPlays(): int
     {
-        return (int) $this->createQueryBuilder('t')->select('COALESCE(SUM(t.plays), 0)')->getQuery()->getSingleScalarResult();
+        // The database's SUM(), null without a play counted: COALESCE(..., 0) was the 0.
+        return (int) ($this->sumOfPlaysBy([]) ?? 0);
     }
 
     /** @return list<Track> those with an excerpt of the site's - all of them, or only the ones whose waveform is missing */
     public function findWithSample(bool $onlyWithoutPeaks = false): array
     {
-        $query = $this->createQueryBuilder('t')->andWhere('t.sample IS NOT NULL OR t.previewUrl IS NOT NULL')->orderBy('t.id', 'ASC');
+        $criteria = [Group::by('SampleNotNullOrPreviewUrlNotNull')];
         if ($onlyWithoutPeaks) {
-            $query->andWhere('t.peaks IS NULL');
+            $criteria[] = Group::by('PeaksNull');
         }
 
-        return $query->getQuery()->getResult();
+        return $this->findBy($criteria, ['id' => 'ASC']);
+    }
+
+    /** The track a film is of (the first, when several share it): its work, its performers, its release. */
+    public function findOneByVideo(Video $video): ?Track
+    {
+        return $this->findOneBy(['videos' => $video], ['id' => 'ASC']);
     }
 }

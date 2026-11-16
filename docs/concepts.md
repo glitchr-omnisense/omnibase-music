@@ -5,7 +5,7 @@ order: 20
 
 # Records, works and films
 
-A `Release` and a `Video` are omnibase threads; the others are plain rows. Uploads
+A `Release` is an omnibase thread (discriminator `music`); the others are plain rows. Uploads
 (`#[Uploader]`: a sleeve, a logo, an excerpt, a film, a poster, a picture) are stored by the
 core's uploader; their getters return the public path, and `get…File()` the file.
 
@@ -100,25 +100,13 @@ URL-encoded; `null` without a pattern, or when the record lacks a value the patt
 `position`. `getFullTitle()` is `title, opus`; `__toString()` is `composer: full title`;
 `getComposerSortKey()` sorts by the last word of the name; `getMovementList()`.
 
-## `Video`
+## Films
 
-`Base\Music\Entity\Video` extends `Thread` (`music_video`, discriminator `music_video`):
-
-| Property | Column | Meaning |
-|---|---|---|
-| `file` | upload, video, 512 MB | a film of the site's |
-| `youtubeId`, `vimeoId` | `string(32)` | the id, read off any address given (`watch?v=`, `youtu.be/`, `/embed/`, `/shorts/`, `/live/`; `vimeo.com/<id>`) |
-| `poster` | upload, image, 16 MB | |
-| `duration` | `integer` | seconds |
-| `featured` | `boolean` | |
-| `work`, `release` | many-to-one, `SET NULL` | what was played, the record it belongs to |
-| `recordedAt`, `venue` | | when and where |
-| `performers` | many-to-many (`music_video_performer`) | |
-
-`isLocal()` (a file of the site's), `getEmbedUrl(bool $autoplay = true)`
-(`https://www.youtube-nocookie.com/embed/<id>?rel=0&modestbranding=1`, or
-`https://player.vimeo.com/video/<id>?dnt=1`, plus `&autoplay=1`; `null` for a local film),
-`getWatchUrl()`, `isPlayable()`, `getPosterUrl()`, `publish()`.
+The films are omnibase/video's `Base\Video\Entity\Video` (its sources: a file of the site's, transcoded, or a
+YouTube or Vimeo frame; its poster, its duration; where and when it was filmed: `venue`, `recordedAt`). A
+`Track` has none, one or several (`getVideos()`, `addVideo()`, `removeVideo()`; many-to-many owned by music,
+`music_track_video`); the work played and the performers are the track's. `Release::getVideos()` gives those of
+its tracks, in the tracks' order, each once (no relation of its own).
 
 ## `Instrument`, `Performer`, `Playlist`
 
@@ -148,10 +136,9 @@ URL-encoded; `null` without a pattern, or when the record lacks a value the patt
 
 | Repository | Methods |
 |---|---|
-| `ReleaseRepository` | `findPublished()` (published, `publishedAt` past, newest first - announced ones included), `findLatest(int $limit = 3, ?ReleaseType $type = null)` (out only), `findFeatured()` (the featured one out, else the newest out), `findOnePublished(string $slug)`, `findUpcoming()` (announced or dated in the future, the nearest first) |
-| `TrackRepository` | `countSilent()` (no file, no preview), `countPlay(Track)` (adds one in the database), `countPlays()`, `findWithSample(bool $onlyWithoutPeaks = false)` |
+| `ReleaseRepository` | `findPublished()` (published, `publishedAt` past, newest first - announced ones included), `findLatest(int $limit = 3, ?ReleaseType $type = null)` (out only), `findFeatured()` (the featured one out, else the newest out), `findOnePublished(string $slug)`, `findUpcoming()` (announced or dated in the future, the nearest first), `findVideos(?int $limit = null)` (the site's films: those of the published releases' tracks, newest release first, each once, the reachable ones) |
+| `TrackRepository` | `countSilent()` (no file, no preview), `countPlay(Track)` (adds one in the database), `countPlays()`, `findWithSample(bool $onlyWithoutPeaks = false)`, `findOneByVideo(Video)` (the track a film is of) |
 | `WorkRepository` | `findVisible()`, `findVisibleGrouped(string $by)` and `WorkRepository::group()`: group => composer => works, by `formation` (by rank), `composer` (by surname) or `period` (oldest first, no period last) |
-| `VideoRepository` | `findPublished(?int $limit = null)` (featured first, then the newest), `findFeatured()`, `findOnePublished(string $slug)`, `findByRelease(Release)` |
 | `InstrumentRepository` | `findVisible()` (featured first), `findFeatured()` (else the first visible) |
 | `PlaylistRepository` | `findVisible(?PlaylistKind $kind = null)` (featured first, then by position), `findFeatured(?PlaylistKind $kind = null)` |
 | `LabelRepository` | `findOneByName(string $name)`, whatever its case |

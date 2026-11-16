@@ -8,7 +8,6 @@ use Base\Music\Repository\InstrumentRepository;
 use Base\Music\Repository\PlaylistRepository;
 use Base\Music\Repository\ReleaseRepository;
 use Base\Music\Repository\TrackRepository;
-use Base\Music\Repository\VideoRepository;
 use Base\Music\Repository\WorkRepository;
 use Base\Music\Service\JsonLd;
 use Base\Music\Service\Player;
@@ -30,7 +29,6 @@ class MusicController extends AbstractController
 {
     public function __construct(
         private readonly ReleaseRepository $releases,
-        private readonly VideoRepository $videos,
         private readonly WorkRepository $works,
         private readonly InstrumentRepository $instruments,
         private readonly PlaylistRepository $playlists,
@@ -58,7 +56,7 @@ class MusicController extends AbstractController
             'featured' => $featured,
             'upcoming' => $upcoming,
             'others' => $others,
-            'videos' => $this->videos->findPublished(6),
+            'videos' => $this->releases->findVideos(6),
             // "Listen in full": the profile first, then the musician's own playlists, then the picks.
             'artist' => $this->playlists->findFeatured(PlaylistKind::ARTIST),
             'own' => $this->playlists->findVisible(PlaylistKind::OWN),
@@ -88,19 +86,22 @@ class MusicController extends AbstractController
     public function videos(): Response
     {
         return $this->render('@Music/client/videos.html.twig', [
-            'videos' => $this->videos->findPublished(),
+            'videos' => $this->releases->findVideos(),
         ]);
     }
 
     #[Route('/videos/{slug}', name: 'music_video', requirements: ['slug' => '[a-z0-9\-]+'])]
     public function video(string $slug): Response
     {
-        $video = $this->videos->findOnePublished($slug)
+        // One of the site's films (a film of a published release's track), by its address on omnibase/video.
+        $films = $this->releases->findVideos();
+        $video = array_values(array_filter($films, static fn ($film) => $film->getSlug() === $slug))[0]
             ?? throw $this->createNotFoundException(sprintf('No published video "%s".', $slug));
 
         return $this->render('@Music/client/video.html.twig', [
             'video' => $video,
-            'others' => array_values(array_filter($this->videos->findPublished(4), fn ($other) => $other !== $video)),
+            'track' => $this->tracks->findOneByVideo($video),
+            'others' => \array_slice(array_values(array_filter($films, static fn ($other) => $other !== $video)), 0, 4),
         ]);
     }
 
@@ -175,7 +176,7 @@ class MusicController extends AbstractController
 
         return $this->render('@Music/client/release.html.twig', [
             'release' => $release,
-            'videos' => $this->videos->findByRelease($release),
+            'videos' => array_values(array_filter($release->getVideos(), static fn ($video) => $video->isReachable())),
             'jsonld' => $this->withJsonLd ? $this->jsonLd->album($release, $this->generateUrl('music_release', ['slug' => $release->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)) : null,
         ]);
     }

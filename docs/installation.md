@@ -14,7 +14,7 @@ What `composer.json` requires: PHP 8.2 or later, `doctrine/orm` 2.15 or 3,
 
 On the server, ffmpeg computes the tracks' waveforms and reads the frames of the site's own
 films (`apt install ffmpeg`, `apk add ffmpeg`); without it, both are skipped and said so
-([Waveforms and posters](usage-media.md)). The poster picker needs PHP's GD extension.
+([Waveforms](usage-media.md)). 
 
 ## The bundles
 
@@ -26,7 +26,7 @@ composer require omnibase/music
 // config/bundles.php
 return [
     // ...
-    Omnibridge\Symfony\Omnibase\BaseBundle::class => ['all' => true],
+    Base\BaseBundle::class => ['all' => true],
     Base\Admin\AdminBundle::class => ['all' => true],
     Omnisong\Bridge\Symfony\OmnisongBundle::class => ['all' => true],
     Base\Music\MusicBundle::class => ['all' => true],
@@ -89,9 +89,9 @@ bin/console doctrine:migrations:diff
 bin/console doctrine:migrations:migrate
 ```
 
-Tables: `music_release` and `music_video` (joined to the core's thread table), `music_label`,
+Tables: `music_release` (joined to the core's thread table), `music_label`,
 `music_track`, `music_work`, `music_instrument`, `music_performer`, `music_playlist`, and the
-join tables `music_release_performer`, `music_video_performer`.
+join tables `music_release_performer`, `music_track_video` (a track's films, omnibase/video's `video` rows).
 
 ## The public files
 

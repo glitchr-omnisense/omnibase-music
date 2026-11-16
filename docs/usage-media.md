@@ -1,12 +1,12 @@
 ---
-title: Waveforms and posters
+title: Waveforms
 order: 33
 ---
 
-# Waveforms and posters
+# Waveforms
 
 Both run ffmpeg on the server through symfony/process. Without it they compute nothing, say
-so, and the pages keep working: a plain line instead of a waveform, the poster as it is.
+so, and the pages keep working: a plain line instead of a waveform.
 
 ## Waveforms
 
@@ -43,31 +43,3 @@ echo implode(' ', Peaks::reduce($pcm, 8)), "\n";
 ```
 1 0.867 0.734 0.601 0.468 0.335 0.203 0.077
 ```
-
-## Posters
-
-```bash
-bin/console music:posters               # the films without a poster
-bin/console music:posters --all         # every film, a poster set by hand included
-bin/console music:posters --video 7     # one film
-```
-
-or a film's **Pick from the film** action (`/admin/videos/{entityId}/poster`).
-`Base\Music\Service\PosterPicker::pick(Video $video): bool` chooses among the film's own
-frames, with no machine learning:
-
-- a YouTube film: its frames at a quarter, a half and three quarters (`maxres`, `sd` or `hq`,
-  the largest there is), and the thumbnail its channel chose, weighted 0.8 (its lettering
-  reads as sharpness);
-- a Vimeo film: its thumbnail (oEmbed);
-- a film of the site's: six frames read by ffmpeg at 10, 25, 40, 55, 70 and 85% of its length
-  (120 s when it has none).
-
-Each picture has its letterbox bars cut off (`uncropped()`), then is measured on a copy 96
-pixels wide (`PosterPicker::score()`, 0 to 1): exposure (best around 48% luminance, 0.25),
-contrast (0.20), sharpness by the Laplacian's mean (0.25), colourfulness (Hasler and
-Süsstrunk, 0.10), and the share of skin or warm wood and gilding - the musician and the
-instrument rather than an empty stage (0.20). A mostly black frame scores a quarter. The best
-becomes the poster, a JPEG file of the site (86% quality, 1280 pixels wide at most), so a
-visitor's page asks nothing of the platform before a click. Fetches time out after 8 seconds;
-an answer other than 200 is skipped.

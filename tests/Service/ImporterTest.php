@@ -9,7 +9,7 @@ use Base\Music\Repository\LabelRepository;
 use Base\Music\Repository\ReleaseRepository;
 use Base\Music\Service\Importer;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 use Omnisong\Model\Label as CatalogueLabel;
 use Omnisong\Model\PlatformLink;
 use Omnisong\Model\PlatformLinks;
@@ -61,7 +61,7 @@ final class ImporterTest extends TestCase
         $labels = $this->createMock(LabelRepository::class);
         $labels->method('findOneByName')->willReturn($known);
 
-        return new Importer($this->createMock(EntityManagerInterface::class), $labels, $this->createMock(ReleaseRepository::class));
+        return new Importer($this->createMock(UnitOfWork::class), $labels, $this->createMock(ReleaseRepository::class));
     }
 
     public function testOnlyTheEmptyFieldsAreFilled(): void

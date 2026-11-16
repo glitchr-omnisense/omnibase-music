@@ -6,14 +6,12 @@ use Base\Music\Service\HeroFrame;
 use Base\Music\Entity\Instrument;
 use Base\Music\Entity\Release;
 use Base\Music\Entity\Track;
-use Base\Music\Entity\Video;
 use Base\Music\Entity\Playlist;
 use Base\Music\Enum\PlaylistKind;
 use Base\Music\Enum\ReleaseType;
 use Base\Music\Repository\InstrumentRepository;
 use Base\Music\Repository\PlaylistRepository;
 use Base\Music\Repository\ReleaseRepository;
-use Base\Music\Repository\VideoRepository;
 use Base\Music\Service\Availability;
 use Base\Music\Service\Player;
 use Base\Service\SettingBagInterface;
@@ -34,7 +32,6 @@ final class MusicExtension extends AbstractExtension
 {
     public function __construct(
         private readonly ReleaseRepository $releases,
-        private readonly VideoRepository $videos,
         private readonly InstrumentRepository $instruments,
         private readonly PlaylistRepository $playlists,
         private readonly Player $player,
@@ -64,7 +61,7 @@ final class MusicExtension extends AbstractExtension
             new TwigFunction('music_releases', fn (): array => $this->releases->findPublished()),
             new TwigFunction('music_featured', fn (): ?Release => $this->releases->findFeatured()),
             new TwigFunction('music_upcoming', fn (): array => $this->releases->findUpcoming()),
-            new TwigFunction('music_videos', fn (?int $limit = null): array => $this->videos->findPublished($limit)),
+            new TwigFunction('music_videos', fn (?int $limit = null): array => $this->releases->findVideos($limit)),
             new TwigFunction('music_instrument', fn (): ?Instrument => $this->instruments->findFeatured()),
             new TwigFunction('music_performers', self::performers(...)),
             new TwigFunction('music_platform_icon', self::platformIcon(...)),
@@ -111,10 +108,14 @@ final class MusicExtension extends AbstractExtension
      * "Ensemble Exemple, Michel Deneuve, conductor" - the template puts
      * "with" before it in the visitor's language.
      */
-    public static function performers(Release|Video|null $subject): string
+    public static function performers(Release|Track|null $subject): string
     {
         if (null === $subject) {
             return '';
+        }
+        // A track: who plays on it alone, else its release's performers.
+        if ($subject instanceof Track) {
+            return $subject->getPerformers() ?: self::performers($subject->getRelease());
         }
         $names = array_map(static fn ($performer) => (string) $performer, $subject->getPerformers()->toArray());
 

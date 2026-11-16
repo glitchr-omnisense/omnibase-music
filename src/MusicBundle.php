@@ -3,12 +3,12 @@
 namespace Base\Music;
 
 use Base\Traits\SingletonTrait;
-use Omnibridge\Symfony\Omnibase\Bundle\AbstractBaseBundle;
+use Base\Bundle\AbstractBaseBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * A musician's site on top of omnibase's Thread: a Release and a Video ARE
- * threads (JOINED subclasses); a label, a track, a work, an instrument and a
+ * A musician's site on top of omnibase's Thread: a Release IS a thread (a JOINED
+ * subclass), its tracks' films are omnibase/video's; a label, a track, a work, an instrument and a
  * performer are plain rows. The label goes first, everywhere.
  */
 class MusicBundle extends AbstractBaseBundle

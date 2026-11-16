@@ -5,14 +5,14 @@ namespace Base\Music\Entity;
 use Base\Music\Enum\Formation;
 use Base\Music\Enum\Period;
 use Base\Music\Repository\WorkRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * A piece of the repertoire: who wrote it, its title and its number, what
  * it is written for, how long it lasts, its movements. The /repertoire page
  * lists the visible ones - what a programmer reads before writing - and a
- * track or a video can say which work it is.
+ * track (and so its films) can say which work it is.
  */
 #[ORM\Entity(repositoryClass: WorkRepository::class)]
 #[ORM\Table(name: 'music_work')]

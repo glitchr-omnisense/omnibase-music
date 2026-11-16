@@ -8,7 +8,7 @@ use Base\Music\Entity\Track;
 use Base\Music\Enum\ReleaseType;
 use Base\Music\Repository\LabelRepository;
 use Base\Music\Repository\ReleaseRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 use Omnisong\Catalog\Catalog;
 use Omnisong\Exception\OmnisongException;
 use Omnisong\Model\Label as CatalogueLabel;
@@ -36,7 +36,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 class Importer
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private readonly UnitOfWork $unitOfWork,
         private readonly LabelRepository $labels,
         private readonly ReleaseRepository $releases,
         private readonly ?Catalog $catalog = null,
@@ -120,7 +120,7 @@ class Importer
             $release = new Release();
             $release->setTitle($found->title);
             $release->setType(ReleaseType::fromCatalogue($found->type));
-            $this->entityManager->persist($release);
+            $this->unitOfWork->persist($release);
         }
         $report = $this->apply($release, $found, $incomplete);
 
@@ -252,7 +252,7 @@ class Importer
         $label = $this->labels->findOneByName($found->name);
         if (null === $label) {
             $label = (new Label())->setName($found->name)->setUrl($found->url)->setShopUrl($found->shopUrl);
-            $this->entityManager->persist($label);
+            $this->unitOfWork->persist($label);
         }
 
         return $label;

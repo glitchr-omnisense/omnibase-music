@@ -40,7 +40,7 @@ is still to come) is a 404.
 `/music/{slug}` renders `@Music/client/release.html.twig`: the sleeve and the label (logo,
 "released by", the label's page and shop before the platforms, as `music.label_first` says),
 the player, the liner notes, the prizes, the performers, the films of the record
-(`VideoRepository::findByRelease()`), and - with `music.jsonld` - its JSON-LD.
+(`Release::getVideos()`, its tracks' films), and - with `music.jsonld` - its JSON-LD.
 
 ### JSON-LD
 
@@ -63,10 +63,10 @@ the page is a 404.
 
 ## `/videos` and a film's page
 
-Every published film, featured first, then the newest. A film of the site's plays in place; a
+The films of the published releases' tracks (omnibase/video's), the newest release first. A film of the site's plays in place; a
 YouTube or Vimeo film shows its poster and a play button first, and loads
 `youtube-nocookie.com` or Vimeo with `dnt=1` only on the click (and, with omnibase/consent,
-once `MEDIA` is accepted). A film's page shows four others.
+once `MEDIA` is accepted). A film's page (by its omnibase/video address) shows its track's work, performers and release, and four others.
 
 ## `/instrument`
 

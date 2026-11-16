@@ -4,7 +4,7 @@ namespace Base\Music\Command;
 
 use Base\Music\Repository\TrackRepository;
 use Base\Music\Service\Peaks;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +23,7 @@ class PeaksCommand extends Command
     public function __construct(
         private readonly TrackRepository $tracks,
         private readonly Peaks $peaks,
-        private readonly EntityManagerInterface $entityManager,
+        private readonly UnitOfWork $unitOfWork,
     ) {
         parent::__construct();
     }
@@ -66,7 +66,7 @@ class PeaksCommand extends Command
                 $io->writeln(sprintf(' <comment>-</comment> #%d %s', $track->getId(), $track->getDisplayTitle()), OutputInterface::VERBOSITY_VERBOSE);
             }
         }
-        $this->entityManager->flush();
+        $this->unitOfWork->flush();
 
         $io->success(sprintf('%d waveform(s) computed, %d track(s) skipped (no excerpt, or a file ffmpeg could not read).', $done, $skipped));
 
