@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased] - 1.0.0
+## 2.0.0
 
 omnibase/music is a musician's site on omnisense/omnibase: the records and their label, the repertoire, the films, the
 instrument, the people who play along, and one player for the whole page. It names only `Base\` classes: its

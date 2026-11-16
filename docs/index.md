@@ -3,7 +3,7 @@
 A musician's site on [omnisense/omnibase](https://github.com/glitchr-omnisense/omnibase): the
 records and the label that released them, the repertoire, the films, the instrument, the
 people who play along - and one player for the whole page, with no JavaScript dependency. It
-is a Symfony bundle (`Base\Music\MusicBundle`) on omnisense/omnibase 5.1 or later, with its back office on
+is a Symfony bundle (`Base\Music\MusicBundle`) on omnisense/omnibase 7.0 or later, with its back office on
 omnibase/admin and its catalogues through
 [omnisense/omnisong](https://github.com/glitchr-omnisense/omnisong).
 
