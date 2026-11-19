@@ -144,7 +144,7 @@ class Importer
             $filled[] = 'upc';
         }
         if (null === $release->getReleasedAt() && $found->releasedAt) {
-            $release->setReleasedAt(\DateTime::createFromImmutable($found->releasedAt));
+            $release->setReleasedAt($found->releasedAt);
             $filled[] = 'releasedAt';
         }
         if (!$release->hasCover() && null === $release->getCoverUrl() && $found->coverUrl) {

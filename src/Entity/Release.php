@@ -65,7 +65,7 @@ class Release extends Thread implements LinkableInterface
     #[ORM\Column(length: 14, nullable: true)]
     protected ?string $upc = null;
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(type: 'date_immutable', nullable: true)]
     protected ?\DateTimeInterface $releasedAt = null;
 
     /** Announced, not out yet: the page says when, and offers the pre-save. */
@@ -135,7 +135,8 @@ class Release extends Thread implements LinkableInterface
     public function setUpc(?string $upc): self { $this->upc = $upc ? (preg_replace('/\D/', '', $upc) ?: null) : null; return $this; }
 
     public function getReleasedAt(): ?\DateTimeInterface { return $this->releasedAt; }
-    public function setReleasedAt(?\DateTimeInterface $releasedAt): self { $this->releasedAt = $releasedAt; return $this; }
+    /** Kept as a \DateTimeImmutable, the column's type (DBAL deprecates the mutable date): any date is given. */
+    public function setReleasedAt(?\DateTimeInterface $releasedAt): self { $this->releasedAt = null === $releasedAt ? null : \DateTimeImmutable::createFromInterface($releasedAt); return $this; }
 
     public function isUpcoming(): bool { return $this->upcoming; }
     public function setUpcoming(bool $upcoming): self { $this->upcoming = $upcoming; return $this; }
